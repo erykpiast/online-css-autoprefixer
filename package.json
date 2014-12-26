@@ -1,0 +1,37 @@
+{
+  "name": "online-css-autoprefixer",
+  "version": "0.0.1",
+  "description": "Online CSS autoprefixe",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/erykpiast/online-css-autoprefixer.git"
+  },
+  "keywords": [
+    "browserify",
+    "require",
+    "seed",
+    "boilerplate"
+  ],
+  "author": "Eryk Napierała <eryk.piast@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erykpiast/online-css-autoprefixer/issues"
+  },
+  "homepage": "https://github.com/erykpiast/online-css-autoprefixer",
+  "devDependencies": {
+    "browserify": "^8.0.1",
+    "es6ify": "^1.6.0",
+    "extend": "^2.0.0",
+    "gulp": "^3.8.10",
+    "gulp-jshint": "^1.9.0",
+    "gulp-util": "^3.0.1",
+    "jshint-stylish": "^1.0.0",
+    "proxyquireify": "~1.1",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1"
+  }
+}

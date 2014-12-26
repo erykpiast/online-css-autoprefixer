@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/erykpiast/online-css-autoprefixer.git"
+    "url": "git://github.com/erykpiast/.git"
   },
   "keywords": [
     "browserify",
@@ -23,15 +23,15 @@
   },
   "homepage": "https://github.com/erykpiast/online-css-autoprefixer",
   "devDependencies": {
-    "browserify": "^8.0.1",
-    "es6ify": "^1.6.0",
-    "extend": "^2.0.0",
-    "gulp": "^3.8.10",
-    "gulp-jshint": "^1.9.0",
-    "gulp-util": "^3.0.1",
-    "jshint-stylish": "^1.0.0",
-    "proxyquireify": "~1.1",
-    "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.2.1"
+    "browserify": "~8.0",
+    "watchify": "~2.2",
+    "es6ify": "~1.6",
+    "extend": "~2.0",
+    "gulp": "~3.8",
+    "gulp-util": "~3.0",
+    "gulp-jshint": "~1.9",
+    "jshint-stylish": "~1.0",
+    "vinyl-source-stream": "~1.0",
+    "proxyquireify": "~1.1"
   }
 }

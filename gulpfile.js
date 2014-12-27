@@ -3,19 +3,16 @@
 var gulp = require('gulp');
 
 var config = require('./gulp/config');
-var lint = require('./gulp/lint')(config.src.js.files);
-var build = require('./gulp/build')({
-    mainFile: config.src.js.main,
-    bundleDir: config.dist.js.dir,
-    bundleName: config.dist.js.bundleName
-}, lint);
+var lintTask = require('./gulp/lint');
+var webServerTask = require('./gulp/web-server');
+var buildJsTask = require('./gulp/build/js');
+var buildHtmlTask = require('./gulp/build/html');
 
- // on any dep update, runs the bundler
+gulp.task('build:js', buildJsTask);
+gulp.task('build:html', buildHtmlTask);
+gulp.task('build', [ 'build:js', 'build:html' ]);
 
-gulp.task('build', build);
-gulp.task('lint', lint);
+gulp.task('lint', lintTask);
+gulp.task('webserver', webServerTask);
 
-gulp.task('default', function defaultTask() {
-    lint();
-    build();
-});
+gulp.task('default', [ 'lint', 'build', 'webserver' ]);

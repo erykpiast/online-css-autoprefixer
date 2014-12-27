@@ -1,10 +1,13 @@
-module.exports = (function() {
+import Cycle from 'cyclejs';
+import InputView from './views/input.view';
+import InputIntent from './intents/input.intent';
+import InputModel from './models/input.model';
 
-    var x = 0;
-    var obj = {
-      [x]: 'hello'
-    };
-    
-    console.log(Object.keys(obj).map((key) => 'key "' + key + '" is "' + obj[key]).join('\n'));
 
-})();
+Cycle.createRenderer('#app').inject(InputView);
+
+InputIntent.inject(InputView);
+InputView.inject(InputModel);
+InputModel.inject(InputIntent, {
+    source: ''
+});

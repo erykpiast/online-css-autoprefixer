@@ -1,15 +1,18 @@
 import Cycle from 'cyclejs';
-import { h } from 'cyclejs';
 
-export var InputView = Cycle.createView([ 'source' ], function (model) {
+var h = Cycle.h;
+
+var InputView = Cycle.createView([ 'source' ], function (model) {
     return {
-        events: [ 'sourceChange' ],
-        vtree$: h('div', {}, [
-            h('label[for="input-css"]', 'Your CSS:'),
-            h('textarea[id="input-css"]', {
-                'ev-input': 'sourceChange',
-                'value': model.source
+        events: [ 'inputText' ],
+        vtree$: model.source.map(source => h('div', {}, [
+            h('label', {},'Your CSS:'),
+            h('textarea', {
+                'ev-input': 'inputText',
+                'value': source
             })
-        ])
+        ]))
   };
 });
+
+export default InputView;

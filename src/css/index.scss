@@ -1,0 +1,79 @@
+html {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+
+
+.autoprefixer {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        background: green;
+        min-height: 5em;
+    }
+
+    &__content {
+        display: flex;
+        flex: 1;
+    }
+
+    &__view-container--settings {
+        width: 100%;
+    }
+
+    &__view-container--input,
+    &__view-container--output {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    &__input,
+    &__output {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        &__label {
+            display: block;
+        }
+
+        &__content {
+            flex: 1;
+
+            border: 1px solid #000;
+            padding: .5em;
+        }
+    }
+
+    &__input {
+
+        &__content {
+            resize: none;
+
+            &:focus {
+                box-shadow: 0 0 .25em 0 #000 inset;
+                outline: none;
+            }
+        }
+    }
+
+    &__output {
+
+        &__content {
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    }
+}

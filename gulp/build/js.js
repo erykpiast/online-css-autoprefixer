@@ -9,6 +9,13 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var browserify = require('browserify');
 var es6ify = require('es6ify');
+var aliasify = require('aliasify').configure({
+    aliases: {
+        'autoprefixer': '../../shims/autoprefixer.js'
+    },
+    configDir: __dirname,
+    verbose: false
+});
 
 var config = require('../config');
 
@@ -30,10 +37,16 @@ function buildJsTask() {
 
 var bundler = watchify(browserify(extend({
         debug: true,
-        entries: config.src.js.main
+        entries: config.src.js.main,
+        shim: {
+            autoprefixer: {
+                exports: 'autoprefixer'
+            }
+        }
     }, watchify.args))
     .add(es6ify.runtime)
     .transform(es6ify)
+    .transform(aliasify)
 );
 
 bundler.on('update', function() {

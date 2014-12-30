@@ -9,6 +9,9 @@ module.exports = {
         html: {
             dir: './src/html',
             files: './src/html/**/*.html'
+        },
+        css: {
+            files: './src/css/**/*.scss'
         }
     },
     dist: {
@@ -18,6 +21,9 @@ module.exports = {
             bundleName: 'bundle.js'
         },
         html: {
+            dir: './dist'
+        },
+        css: {
             dir: './dist'
         }
     }

@@ -2,9 +2,23 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+
         <title>Online CSS autoprefixer</title>
+
+        <link rel="stylesheet" type="text/css" href="index.css">
+
+        <script src="https://rawgithub.com/ai/autoprefixer-rails/master/vendor/autoprefixer.js"></script>
     </head>
-    <body>
+    <body class="autoprefixer">
+
+        <header class="autoprefixer__header">
+            <div id="settings" class="autoprefixer__view-container autoprefixer__view-container--settings"></div>
+        </header>
+
+        <div class="autoprefixer__content">
+            <div id="input" class="autoprefixer__view-container autoprefixer__view-container--input"></div>
+            <div id="output" class="autoprefixer__view-container autoprefixer__view-container--output"></div>
+        </div>
        
         <script src="bundle.js"></script>
     </body>

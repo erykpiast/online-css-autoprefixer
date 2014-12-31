@@ -1,8 +1,17 @@
 import Cycle from 'cyclejs';
 
+import storage from '../services/storage';
+
+
 var InputModel = Cycle.createModel([ 'sourceChange' ], function (intent) {
     return {
-        source: intent.sourceChange.startWith('transform: translateX( -100% );\nbackground: linear-gradient(to top, #000, #FFF);')
+        source: intent.sourceChange
+            .startWith(storage.read('input'))
+            .map(function(input) {
+                storage.save('input', input);
+
+                return input;
+            })
     };
 });
 

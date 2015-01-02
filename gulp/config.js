@@ -26,5 +26,14 @@ module.exports = {
         css: {
             dir: './dist'
         }
+    },
+    test: {
+        files: './src/js/**/*.spec.js',
+        bundle: {
+            name: 'tests.js',
+            dir: './dist'
+        },
+        runtimeFiles: [ './test/**/*.js' ],
+        runnerConfig: './karma.conf.js'
     }
 }

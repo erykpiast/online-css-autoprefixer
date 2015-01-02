@@ -3,7 +3,7 @@ import lodash from 'lodash';
 
 
 // Browsers, which interested for Autoprefixer
-// var names = [ 'firefox', 'chrome', 'safari', 'ios_saf', 'opera', 'ie', 'bb', 'android' ];
+var names = [ 'firefox', 'chrome', 'safari', 'ios_saf', 'opera', 'ie', 'bb', 'android' ];
 
 // Browsers, that will be used in "last 2 version" and same selections
 var major = [ 'firefox', 'chrome', 'safari', 'ios_saf', 'opera', 'android', 'ie', 'ie_mob' ];
@@ -19,8 +19,8 @@ function interval(array) {
 
     array.forEach(function(interval) {
         var splited = interval.split('-').sort().reverse();
-        var sub = splited.map(function(part, index) {
-            return [ index, interval, splited.length ];
+        var sub = splited.map(function(part) {
+            return [ part, interval, splited.length ];
         });
 
         result  = result.concat(sub);
@@ -47,7 +47,7 @@ class SettingsParser {
     constructor(data) {
         this._data = {
             updated: data.updated,
-            browsers: mapValues(data.agents, convert)
+            browsers: mapValues(lodash.pick(data.agents, names), convert)
         };
 
         this._aliases = {

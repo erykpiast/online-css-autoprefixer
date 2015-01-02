@@ -42,7 +42,8 @@
   },
   "dependencies": {
     "cyclejs": "^0.6.7",
-    "lodash": "^2.4.1",
+    "lodash.pick": "^2.4.1",
+    "lodash.uniq": "^2.4.1",
     "map-values": "^1.0.1",
     "rx": "^2.3.22",
     "xhr": "^2.0.0"

@@ -12,8 +12,7 @@ var es6ify = require('es6ify');
 var aliasify = require('aliasify').configure({
     aliases: {
         'autoprefixer': '../../shims/autoprefixer.js',
-        'rx': '../../shims/rx.js',
-        'lodash': '../../shims/lodash.js'
+        'rx': '../../shims/rx.js'
     },
     configDir: __dirname,
     verbose: false

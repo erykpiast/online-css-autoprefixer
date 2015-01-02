@@ -11,7 +11,9 @@ var browserify = require('browserify');
 var es6ify = require('es6ify');
 var aliasify = require('aliasify').configure({
     aliases: {
-        'autoprefixer': '../../shims/autoprefixer.js'
+        'autoprefixer': '../../shims/autoprefixer.js',
+        'rx': '../../shims/rx.js',
+        'lodash': '../../shims/lodash.js'
     },
     configDir: __dirname,
     verbose: false
@@ -37,14 +39,10 @@ function buildJsTask() {
 
 var bundler = watchify(browserify(extend({
         debug: true,
-        entries: config.src.js.main,
-        shim: {
-            autoprefixer: {
-                exports: 'autoprefixer'
-            }
-        }
+        entry: true
     }, watchify.args))
     .add(es6ify.runtime)
+    .add(config.src.js.main)
     .transform(es6ify)
     .transform(aliasify)
 );

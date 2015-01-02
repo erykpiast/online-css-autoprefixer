@@ -1,5 +1,5 @@
 import Cycle from 'cyclejs';
-// import Rx from 'rx';
+import Rx from 'rx';
 
 import getJson from '../services/get-json';
 import storage from '../services/storage';
@@ -15,9 +15,9 @@ var SettingsModel = Cycle.createModel([ 'settingsChange' ], function (intent) {
     return {
         settings: intent.settingsChange
             .skipUntil(canIUseData)
-            // .merge(Rx.Observable.fromPromise(canIUseData.then(function() {
-            //     return settingsParser.parse(storage.read('settings'));
-            // })))
+            .merge(Rx.Observable.fromPromise(canIUseData.then(function() {
+                return settingsParser.parse(storage.read('settings'));
+            })))
             .map(function(settings) {
                 storage.save('settings', settingsParser.stringify(settings));
 

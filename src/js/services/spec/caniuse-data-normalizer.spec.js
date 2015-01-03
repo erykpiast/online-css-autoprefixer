@@ -1,16 +1,19 @@
 /* global describe, it */
+import chai from 'chai';
+import caniuseDataNormalizer from '../caniuse-data-normalizer';
 
-var assert = require('chai').assert;
+var assert = chai.assert;
 
-describe('Array', function() {
 
-    describe('#indexOf()', function () {
+describe('caniuseDataNormalizer API test', function() {
 
-        it('should return -1 when the value is not present', function() {
-            assert.equal(-1, [1,2,3].indexOf(5));
-            assert.equal(-1, [1,2,3].indexOf(0));
-        });
-
+    it('should be an object with normalize function', function() {
+        assert.isObject(caniuseDataNormalizer, 'module is not an object');
+        assert.isFunction(caniuseDataNormalizer.normalize, 'module has not normalize function');
     });
+
+});
+
+describe('caniuseDataNormalizer crunching data test', function() {
 
 });

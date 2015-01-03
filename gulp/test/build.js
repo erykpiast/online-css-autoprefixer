@@ -30,6 +30,7 @@ function buildTestsTask() {
 
 var bundler = (function createBundler(onBundleUpdate) {
     var bundler = watchify(browserify(extend({
+            debug: true,
             entry: true
         }, watchify.args))
         .add(es6ify.runtime)
@@ -39,7 +40,7 @@ var bundler = (function createBundler(onBundleUpdate) {
         bundler = bundler.add(filePath);
     });
 
-    bundler = bundler.transform(es6ify);
+    bundler = bundler.transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/));
 
     bundler.on('update', onBundleUpdate); 
 

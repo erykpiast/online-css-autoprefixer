@@ -1,11 +1,9 @@
 import uniq from 'lodash.uniq';
 
-import caniuseDataNormalizer from './caniuse-data-normalizer';
-
 
 class SettingsParser {
     constructor(data) {
-        this._data = caniuseDataNormalizer.normalize(data);
+        this._data = data;
 
         this._aliases = {
             fx: 'firefox',

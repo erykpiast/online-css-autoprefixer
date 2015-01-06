@@ -1,5 +1,6 @@
 import mapValues from 'map-values';
 import pick from 'lodash.pick';
+import indexBy from 'lodash.indexby';
 
 
 /**
@@ -76,13 +77,16 @@ function expandVersionRanges(versionsArray) {
  */
 function normalizeBrowser(data, name) {
     var future = normalizeVersions(data.versions.slice(-3, -1));
-    var versions = expandVersionRanges(normalizeVersions(data.versions.slice(0, -4)));
+    var versions = expandVersionRanges(normalizeVersions(data.versions.slice(0, -3)));
 
     return {
         minor: major.indexOf(name) === -1,
         future: !!future.length,
         versions: versions.map((version) => version[0]),
-        popularity: versions.map((version) => data['usage_global'][version[1]] / version[2])
+        popularity: indexBy(
+            versions.map((version) => data['usage_global'][version[1]] / version[2]), 
+            (popularity, index) => versions[index][0]
+        )
     };
 }
 

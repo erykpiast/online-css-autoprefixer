@@ -1,4 +1,5 @@
 import uniq from 'lodash.uniq';
+import groupBy from 'lodash.groupby';
 
 
 class SettingsParser {
@@ -39,7 +40,7 @@ class SettingsParser {
                 regexp: /^> (\d+(\.\d+)?)%$/,
                 select: function(popularity) {
                     return this._browsers(
-                        (data) => data.minor ? [] : data.versions.filter((version, i) => data.popularity[i] > popularity)
+                        (data) => data.minor ? [] : data.versions.filter((version) => data.popularity[version] > popularity)
                     );
                 }
             },
@@ -120,7 +121,13 @@ class SettingsParser {
             }, this);
         }, this);
 
-        return uniq(selected);
+        return groupBy(
+            uniq(selected).map((browserWithVersion) => ({
+                browser: browserWithVersion.split(' ')[0],
+                version: browserWithVersion.split(' ')[1]
+            })),
+            'browser'
+        );
     }
 
     stringify(/*obj*/) {

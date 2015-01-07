@@ -3,7 +3,7 @@
 module.exports = {
     src: {
         js: {
-            files: './src/js/**/*.js',
+            files: [ './src/js/**/*.js', '!./src/js/**/spec/**/*.js' ],
             main: './src/js/app.js'
         },
         html: {
@@ -28,7 +28,7 @@ module.exports = {
         }
     },
     test: {
-        files: './src/js/**/*.spec.js',
+        files: './src/js/**/spec/**/*.spec.js',
         bundle: {
             name: 'tests.js',
             dir: './dist'

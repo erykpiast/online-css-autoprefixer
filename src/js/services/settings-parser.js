@@ -33,7 +33,7 @@ class SettingsParser {
                 regexp: /^last (\d+) (\w+) versions?$/i,
                 select: function(versions, browser) {
                     var data = this._byName(browser);
-                    
+
                     return data.versions.slice(0, versions).map((browserVersion) => [ data.name, browserVersion ].join(' '));
                 }
             },
@@ -58,7 +58,7 @@ class SettingsParser {
                         filter = ((browserVersion) => browserVersion >= version);
                     }
 
-                    return data.versions.filter(filter).map((browserVersion) => [ data.name, browserVersion ].join(' ')); 
+                    return data.versions.filter(filter).map((browserVersion) => [ data.name, browserVersion ].join(' '));
                 }
             },
             olderThan: {
@@ -74,7 +74,7 @@ class SettingsParser {
                         filter = ((browserVersion) => browserVersion <= version);
                     }
 
-                    return data.versions.filter(filter).map((browserVersion) => [ data.name, browserVersion ].join(' ')); 
+                    return data.versions.filter(filter).map((browserVersion) => [ data.name, browserVersion ].join(' '));
                 }
             },
             esr: {
@@ -89,7 +89,7 @@ class SettingsParser {
                     var data = this._byName(browser);
                     var version = parseFloat(version, 10);
 
-                    var last = parseFloat(data.future ? data.future[0] : data.versions[0], 10);
+                    var last = (data.future && !isNaN(parseFloat(data.future[0], 10)) ? parseFloat(data.future[0], 10) : parseFloat(data.versions[0], 10));
                     var first = parseFloat(data.versions[data.versions.length - 1], 10);
 
 
@@ -110,7 +110,7 @@ class SettingsParser {
 
         var selected = [ ];
 
-        requirements.forEach(function(requirement) { 
+        requirements.forEach(function(requirement) {
             Object.keys(this._requirements).forEach(function(reqName) {
                 var req = this._requirements[reqName];
                 var match = requirement.match(req.regexp);
@@ -161,7 +161,7 @@ class SettingsParser {
         var data = this._data.browsers[name];
 
         data.name = name;
-        
+
         return data;
     }
 }

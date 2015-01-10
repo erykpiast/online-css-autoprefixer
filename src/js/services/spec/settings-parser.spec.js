@@ -389,12 +389,6 @@ describe('SettingsParser instance test', function() {
 
             describe('direct matcher', function() {
 
-                it('Should not support non-numeric versions', function() {
-                    parsed = settingsParser.parse('IE TP');
-                    assert.equal(Object.keys(parsed).length, 0);
-                });
-
-
                 describe('current versions', function() {
 
                     it('Should return only specified browser', function() {
@@ -482,8 +476,8 @@ describe('SettingsParser instance test', function() {
                         assert.sameMembers(parsed.opera, [ '28' ]);
                     });
 
-                    it('Should return the last current version when browser has not future versions', function() {
-                        parsed = settingsParser.parse('IE 13');
+                    it('Should return the last current version when browser has not numeric future versions', function() {
+                        parsed = settingsParser.parse('IE 12');
                         assert.sameMembers(parsed.ie, [ '11' ]);
 
                         parsed = settingsParser.parse('iOS 9.0');

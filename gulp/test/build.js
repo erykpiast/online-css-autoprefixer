@@ -12,9 +12,6 @@ var es6ify = require('es6ify');
 
 var config = require('../config');
 
-var lintTestsTask = require('./lint');
-var runTestsTaks = require('./run');
-
 es6ify.traceurOverrides = {
     asyncFunctions: true
 };
@@ -46,9 +43,9 @@ var bundler = (function createBundler(onBundleUpdate) {
 
     return bundler;
 })(function onBundleUpdate() {
-    lintTestsTask();
-    buildTestsTask();
-    runTestsTaks();
+
+    gulp.start('test');
+
 });
 
 module.exports = buildTestsTask;

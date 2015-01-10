@@ -7,8 +7,8 @@ var stylish = require('jshint-stylish');
 
 var config = require('../config');
 
-module.exports = function lintTestsTask() {
-  return gulp.src(config.test.files)
+module.exports = function lintTestsTask(cb, files) {
+  return gulp.src(files || config.test.files)
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 };

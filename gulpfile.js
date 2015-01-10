@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var runSequence = require('run-sequence');
 
 gulp.task('lint', require('./gulp/lint'));
 gulp.task('webserver', require('./gulp/web-server'));
@@ -13,6 +14,13 @@ gulp.task('build', [ 'build:js', 'build:html', 'build:css' ]);
 gulp.task('test:lint', require('./gulp/test/lint'));
 gulp.task('test:build', require('./gulp/test/build'));
 gulp.task('test:run', require('./gulp/test/run'));
-gulp.task('test', [ 'lint', 'test:lint', 'test:build', 'test:run' ]);
+gulp.task('test', function(cb) {
+    runSequence(
+        [ 'lint', 'test:lint' ],
+        'test:build',
+        'test:run',
+        cb
+    );
+});
 
 gulp.task('default', [ 'lint', 'build', 'webserver' ]);

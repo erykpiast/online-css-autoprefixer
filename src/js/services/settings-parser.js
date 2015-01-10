@@ -1,5 +1,6 @@
 import uniq from 'lodash.uniq';
 import groupBy from 'lodash.groupby';
+import mapValues from 'map-values';
 
 
 class SettingsParser {
@@ -114,19 +115,24 @@ class SettingsParser {
                 var match = requirement.match(req.regexp);
 
                 if(match) {
-                    selected = selected.concat(req.select.apply(this, match.slice(1, -1)));
+                    selected = selected.concat(req.select.apply(this, match.slice(1)));
 
                     return;
                 }
             }, this);
         }, this);
 
-        return groupBy(
-            uniq(selected).map((browserWithVersion) => ({
-                browser: browserWithVersion.split(' ')[0],
-                version: browserWithVersion.split(' ')[1]
-            })),
-            'browser'
+        return mapValues(
+            groupBy(
+                uniq(selected).map((browserWithVersion) => ({
+                    browser: browserWithVersion.split(' ')[0],
+                    version: browserWithVersion.split(' ')[1]
+                })),
+                'browser'
+            ),
+            (browserVersions) => browserVersions.map(
+                (browserVersion) => browserVersion.version
+            )
         );
     }
 

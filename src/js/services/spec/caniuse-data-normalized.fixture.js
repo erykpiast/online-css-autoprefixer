@@ -4,7 +4,7 @@ export default {
     "browsers": {
         "firefox": {
             "minor": false,
-            "future": true,
+            "future": ["37", "36", "35"],
             "versions": ["34", "33", "32", "31", "30", "29", "28", "27", "26", "25", "24", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3.6", "3.5", "3", "2"],
             "popularity": {
                 "2": 0.013434,
@@ -46,7 +46,7 @@ export default {
         },
         "chrome": {
             "minor": false,
-            "future": true,
+            "future": ["42", "41", "40"],
             "versions": ["39", "38", "37", "36", "35", "34", "33", "32", "31", "30", "29", "28", "27", "26", "25", "24", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4"],
             "popularity": {
                 "4": 0.013434,
@@ -89,7 +89,7 @@ export default {
         },
         "safari": {
             "minor": false,
-            "future": false,
+            "future": undefined,
             "versions": ["8", "7.1", "7", "6.1", "6", "5.1", "5", "4", "3.2", "3.1"],
             "popularity": {
                 "4": 0.080604,
@@ -106,7 +106,7 @@ export default {
         },
         "ios_saf": {
             "minor": false,
-            "future": false,
+            "future": undefined,
             "versions": ["8.1", "8", "7.1", "7.0", "6.1", "6.0", "5.1", "5.0", "4.3", "4.2", "4.1", "4.0", "3.2"],
             "popularity": {
                 "8": 3.15802,
@@ -126,7 +126,7 @@ export default {
         },
         "opera": {
             "minor": false,
-            "future": true,
+            "future": ["28", "27"],
             "versions": ["26", "25", "24", "23", "22", "21", "20", "19", "18", "17", "16", "15", "12.1", "12", "11.6", "11.5", "11.1", "11", "10.6", "10.5", "10.1", "10.0", "9.6", "9.5"],
             "popularity": {
                 "11": 0.014996,
@@ -157,7 +157,7 @@ export default {
         },
         "android": {
             "minor": false,
-            "future": false,
+            "future": undefined,
             "versions": ["37", "4.4.4", "4.4.3", "4.4", "4.3", "4.2", "4.1", "4", "3", "2.3", "2.2", "2.1"],
             "popularity": {
                 "3": 0.00623532,
@@ -176,7 +176,7 @@ export default {
         },
         "ie": {
             "minor": false,
-            "future": true,
+            "future": ["TP"],
             "versions": ["11", "10", "9", "8", "7", "6", "5.5"],
             "popularity": {
                 "6": 0.147553,
@@ -190,7 +190,7 @@ export default {
         },
         "bb": {
             "minor": true,
-            "future": false,
+            "future": undefined,
             "versions": ["10", "7"],
             "popularity": {
                 "7": 0.0878202,

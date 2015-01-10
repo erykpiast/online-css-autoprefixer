@@ -49,7 +49,7 @@ class SettingsParser {
                 regexp: /^(\w+) (>=?)\s*([\d\.]+)/,
                 select: function(browser, sign, version) {
                     var data = this._byName(browser);
-                    var version = parseFloat(version);
+                    var version = parseFloat(version, 10);
                     var filter;
 
                     if(sign === '>') {
@@ -65,7 +65,7 @@ class SettingsParser {
                 regexp: /^(\w+) (<=?)\s*([\d\.]+)/,
                 select: function(browser, sign, version) {
                     var data = this._byName(browser);
-                    var version = parseFloat(version);
+                    var version = parseFloat(version, 10);
                     var filter;
 
                     if(sign === '<') {
@@ -87,10 +87,11 @@ class SettingsParser {
                 regexp: /^(\w+) ([\d\.]+)$/,
                 select: function(browser, version) {
                     var data = this._byName(browser);
-                    var version = parseFloat(version);
+                    var version = parseFloat(version, 10);
 
-                    var last = data.future ? data.future[0] : data.versions[0];
-                    var first = data.versions[data.versions.length - 1];
+                    var last = parseFloat(data.future ? data.future[0] : data.versions[0], 10);
+                    var first = parseFloat(data.versions[data.versions.length - 1], 10);
+
 
                     if(version > last) {
                         version = last;

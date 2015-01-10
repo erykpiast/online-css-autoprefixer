@@ -145,13 +145,19 @@ describe('caniuseDataNormalizer normalizing data test', function() {
 
         describe('future field', function() {
 
-            it('Should set future flag if browsers has future versions', function() {
-                assert.equal(chrome.future, true);
+            it('Should set future collection if browsers has future versions', function() {
+                assert.isArray(chrome.future);
+                assert.sameMembers(chrome.future, [ '40', '41' ]);
             });
 
-            it('Should not set future flag if browsers has no future version', function() {
-                assert.equal(bb.future, false);
-                assert.equal(android.future, false);
+            it('Should sort future collection from newest to oldest', function() {
+                assert.equal(chrome.future[0], '41');
+                assert.equal(chrome.future[1], '40');
+            });
+
+            it('Should not set future collection if browsers has no future version', function() {
+                assert.isUndefined(bb.future);
+                assert.isUndefined(android.future);
             });
 
         });

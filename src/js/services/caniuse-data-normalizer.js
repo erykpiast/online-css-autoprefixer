@@ -81,7 +81,7 @@ function normalizeBrowser(data, name) {
 
     return {
         minor: major.indexOf(name) === -1,
-        future: !!future.length,
+        future: (future.length ? future : undefined),
         versions: versions.map((version) => version[0]),
         popularity: indexBy(
             versions.map((version) => data['usage_global'][version[1]] / version[2]), 

@@ -386,6 +386,175 @@ describe('SettingsParser instance test', function() {
 
             });
 
+
+            describe('direct matcher', function() {
+
+                it('Should not support non-numeric versions', function() {
+                    parsed = settingsParser.parse('IE TP');
+                    assert.equal(Object.keys(parsed).length, 0);
+                });
+
+
+                describe('current versions', function() {
+
+                    it('Should return only specified browser', function() {
+                        parsed = settingsParser.parse('Firefox 28');
+                        assert.sameMembers(Object.keys(parsed), [ 'firefox' ], 'object contains browser(s) different than firefox');
+
+                        parsed = settingsParser.parse('Chrome 30');
+                        assert.sameMembers(Object.keys(parsed), [ 'chrome' ], 'object contains browser(s) different than chrome');
+
+                        parsed = settingsParser.parse('IE 8');
+                        assert.sameMembers(Object.keys(parsed), [ 'ie' ], 'object contains browser(s) different than ie');
+
+                        parsed = settingsParser.parse('iOS 7.0');
+                        assert.sameMembers(Object.keys(parsed), [ 'ios_saf' ], 'object contains browser(s) different than ios_saf');
+
+                        parsed = settingsParser.parse('Android 4.4.3');
+                        assert.sameMembers(Object.keys(parsed), [ 'android' ], 'object contains browser(s) different than android');
+
+                        parsed = settingsParser.parse('Safari 7');
+                        assert.sameMembers(Object.keys(parsed), [ 'safari' ], 'object contains browser(s) different than safari');
+
+                        parsed = settingsParser.parse('Opera 12.1');
+                        assert.sameMembers(Object.keys(parsed), [ 'opera' ], 'object contains browser(s) different than opera');
+                    });
+
+                    it('Should return correct browsers versions', function() {
+                        parsed = settingsParser.parse('Firefox 28');
+                        assert.sameMembers(parsed.firefox, [ '28' ]);
+
+                        parsed = settingsParser.parse('Chrome 30');
+                        assert.sameMembers(parsed.chrome, [ '30' ]);
+
+                        parsed = settingsParser.parse('IE 8');
+                        assert.sameMembers(parsed.ie, [ '8' ]);
+
+                        parsed = settingsParser.parse('iOS 7.0');
+                        assert.sameMembers(parsed['ios_saf'], [ '7' ]);
+
+                        parsed = settingsParser.parse('Android 4.4.3');
+                        assert.sameMembers(parsed.android, [ '4.4' ]);
+
+                        parsed = settingsParser.parse('Safari 7');
+                        assert.sameMembers(parsed.safari, [ '7' ]);
+
+                        parsed = settingsParser.parse('Opera 12.1');
+                        assert.sameMembers(parsed.opera, [ '12.1' ]);
+                    });
+
+                });
+
+
+                describe('future versions', function() {
+
+                    it('Should return only specified browser', function() {
+                        parsed = settingsParser.parse('Firefox 37');
+                        assert.sameMembers(Object.keys(parsed), [ 'firefox' ], 'object contains browser(s) different than firefox');
+
+                        parsed = settingsParser.parse('Chrome 41');
+                        assert.sameMembers(Object.keys(parsed), [ 'chrome' ], 'object contains browser(s) different than chrome');
+
+                        parsed = settingsParser.parse('IE 12');
+                        assert.sameMembers(Object.keys(parsed), [ 'ie' ], 'object contains browser(s) different than ie');
+
+                        parsed = settingsParser.parse('iOS 9.0');
+                        assert.sameMembers(Object.keys(parsed), [ 'ios_saf' ], 'object contains browser(s) different than ios_saf');
+
+                        parsed = settingsParser.parse('Android 39');
+                        assert.sameMembers(Object.keys(parsed), [ 'android' ], 'object contains browser(s) different than android');
+
+                        parsed = settingsParser.parse('Safari 9');
+                        assert.sameMembers(Object.keys(parsed), [ 'safari' ], 'object contains browser(s) different than safari');
+
+                        parsed = settingsParser.parse('Opera 28');
+                        assert.sameMembers(Object.keys(parsed), [ 'opera' ], 'object contains browser(s) different than opera');
+                    });
+
+                    it('Should return the first future version when browser has future versions', function() {
+                        parsed = settingsParser.parse('Firefox 37');
+                        assert.sameMembers(parsed.firefox, [ '37' ]);
+
+                        parsed = settingsParser.parse('Chrome 41');
+                        assert.sameMembers(parsed.chrome, [ '41' ]);
+
+                        parsed = settingsParser.parse('Opera 28');
+                        assert.sameMembers(parsed.opera, [ '28' ]);
+                    });
+
+                    it('Should return the last current version when browser has not future versions', function() {
+                        parsed = settingsParser.parse('IE 13');
+                        assert.sameMembers(parsed.ie, [ '11' ]);
+
+                        parsed = settingsParser.parse('iOS 9.0');
+                        assert.sameMembers(parsed['ios_saf'], [ '8.1' ]);
+
+                        parsed = settingsParser.parse('Android 39');
+                        assert.sameMembers(parsed.android, [ '37' ]);
+
+                        parsed = settingsParser.parse('Safari 9');
+                        assert.sameMembers(parsed.safari, [ '8' ]);
+                    });
+
+                });
+
+
+                describe('unreleased versions', function() {
+
+                    describe('extremely old', function() {
+
+                        it('Should return only specified browser', function() {
+                            parsed = settingsParser.parse('Firefox 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'firefox' ], 'object contains browser(s) different than firefox');
+
+                            parsed = settingsParser.parse('Chrome 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'chrome' ], 'object contains browser(s) different than chrome');
+
+                            parsed = settingsParser.parse('IE 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'ie' ], 'object contains browser(s) different than ie');
+
+                            parsed = settingsParser.parse('iOS 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'ios_saf' ], 'object contains browser(s) different than ios_saf');
+
+                            parsed = settingsParser.parse('Android 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'android' ], 'object contains browser(s) different than android');
+
+                            parsed = settingsParser.parse('Safari 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'safari' ], 'object contains browser(s) different than safari');
+
+                            parsed = settingsParser.parse('Opera 0');
+                            assert.sameMembers(Object.keys(parsed), [ 'opera' ], 'object contains browser(s) different than opera');
+                        });
+
+                        it('Should return the first future version', function() {
+                            parsed = settingsParser.parse('Firefox 0');
+                            assert.sameMembers(parsed.firefox, [ '2' ]);
+
+                            parsed = settingsParser.parse('Chrome 0');
+                            assert.sameMembers(parsed.chrome, [ '4' ]);
+
+                            parsed = settingsParser.parse('IE 0');
+                            assert.sameMembers(parsed.ie, [ '5.5' ]);
+
+                            parsed = settingsParser.parse('iOS 0');
+                            assert.sameMembers(parsed['ios_saf'], [ '3.2' ]);
+
+                            parsed = settingsParser.parse('Android 0');
+                            assert.sameMembers(parsed.android, [ '2.1' ]);
+
+                            parsed = settingsParser.parse('Safari 0');
+                            assert.sameMembers(parsed.safari, [ '3.1' ]);
+
+                            parsed = settingsParser.parse('Opera 0');
+                            assert.sameMembers(parsed.opera, [ '9.5' ]);
+                        });
+
+                    });
+
+                });
+
+            });
+
         });
 
     });

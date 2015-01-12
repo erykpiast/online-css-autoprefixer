@@ -6,9 +6,9 @@ import storage from '../services/storage';
 
 var processor = autoprefixer({ browsers: ['> 1%', 'last 2 version'], cascade: true });
 
-var OutputModel = Cycle.createModel([ 'sourceChange' ], function (intent) {
+var OutputModel = Cycle.createModel(function (intent) {
     return {
-        prefixed: intent.sourceChange
+        prefixed$: intent.get('sourceChange$')
             .startWith(storage.read('input'))
             .map(source => processor.process(source, { safe: true }).css)
     };

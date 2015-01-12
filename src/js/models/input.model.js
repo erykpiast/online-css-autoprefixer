@@ -3,9 +3,9 @@ import Cycle from 'cyclejs';
 import storage from '../services/storage';
 
 
-var InputModel = Cycle.createModel([ 'sourceChange' ], function (intent) {
+var InputModel = Cycle.createModel(function (intent) {
     return {
-        source: intent.sourceChange
+        source$: intent.get('sourceChange$')
             .startWith(storage.read('input'))
             .map(function(input) {
                 storage.save('input', input);

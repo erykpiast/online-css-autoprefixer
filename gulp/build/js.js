@@ -46,8 +46,10 @@ var bundler = watchify(browserify(extend({
 );
 
 bundler.on('update', function() {
-    lintTask();
-    buildJsTask();
+    
+    gulp.start('lint');
+    gulp.start('build:js');
+
 }); 
 
 module.exports = buildJsTask;

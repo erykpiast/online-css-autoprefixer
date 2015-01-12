@@ -76,4 +76,10 @@ body {
             white-space: pre-wrap;
         }
     }
+
+    &__raw-config {
+        &__input {
+            width: 100%;
+        }
+    }
 }

@@ -568,7 +568,6 @@ describe('SettingsParser instance test', function() {
 
                 beforeEach(function() {
                     parsed = settingsParser.parse('> 1%, last 2 versions, Firefox ESR, Opera 12.1');
-                    console.log(parsed);
                 });
 
 
@@ -584,6 +583,150 @@ describe('SettingsParser instance test', function() {
                     assert.sameMembers(parsed.android, [ '37', '4.4.4', '4.4', '4.1' ]);
                     assert.sameMembers(parsed.safari, [ '8', '7.1' ]);
                     assert.sameMembers(parsed.opera, [ '26', '25', '12.1' ]);
+                });
+
+            });
+
+
+            describe('aliases', function() {
+
+                describe('last by browser matcher', function() {
+                    
+                    it('should return the same data for all firefox aliases', function() {
+                        var fullNameData = settingsParser.parse('last 2 Firefox versions');
+                        var alias1Data = settingsParser.parse('last 2 FF versions');
+                        var alias2Data = settingsParser.parse('last 2 Fx versions');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                        assert.deepEqual(fullNameData, alias2Data);
+                    });
+
+                    it('should return the same data for all Internet Explorer aliases', function() {
+                        var fullNameData = settingsParser.parse('last 2 IE versions');
+                        var alias1Data = settingsParser.parse('last 2 Explorer versions');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all iOS Safari aliases', function() {
+                        var fullNameData = settingsParser.parse('last 2 iOS_Saf versions');
+                        var alias1Data = settingsParser.parse('last 2 iOS versions');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all BlackBerry Browser aliases', function() {
+                        var fullNameData = settingsParser.parse('last 2 BB versions');
+                        var alias1Data = settingsParser.parse('last 2 BlackBerry versions');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                });
+
+
+                describe('older or equal matcher', function() {
+                    
+                    it('should return the same data for all firefox aliases', function() {
+                        var fullNameData = settingsParser.parse('Firefox <= 30');
+                        var alias1Data = settingsParser.parse('FF <= 30');
+                        var alias2Data = settingsParser.parse('Fx <= 30');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                        assert.deepEqual(fullNameData, alias2Data);
+                    });
+
+                    it('should return the same data for all Internet Explorer aliases', function() {
+                        var fullNameData = settingsParser.parse('IE <= 11');
+                        var alias1Data = settingsParser.parse('Explorer <= 11');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all iOS Safari aliases', function() {
+                        var fullNameData = settingsParser.parse('iOS_Saf <= 7.1');
+                        var alias1Data = settingsParser.parse('iOS <= 7.1');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all BlackBerry Browser aliases', function() {
+                        var fullNameData = settingsParser.parse('BB <= 10');
+                        var alias1Data = settingsParser.parse('BlackBerry <= 10');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                });
+
+
+                describe('newer or equal matcher', function() {
+                    
+                    it('should return the same data for all firefox aliases', function() {
+                        var fullNameData = settingsParser.parse('Firefox >= 30');
+                        var alias1Data = settingsParser.parse('FF >= 30');
+                        var alias2Data = settingsParser.parse('Fx >= 30');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                        assert.deepEqual(fullNameData, alias2Data);
+                    });
+
+                    it('should return the same data for all Internet Explorer aliases', function() {
+                        var fullNameData = settingsParser.parse('IE >= 11');
+                        var alias1Data = settingsParser.parse('Explorer >= 11');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all iOS Safari aliases', function() {
+                        var fullNameData = settingsParser.parse('iOS_Saf >= 7.1');
+                        var alias1Data = settingsParser.parse('iOS >= 7.1');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all BlackBerry Browser aliases', function() {
+                        var fullNameData = settingsParser.parse('BB >= 10');
+                        var alias1Data = settingsParser.parse('BlackBerry >= 10');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                });
+
+
+                describe('direct matcher', function() {
+                    
+                    it('should return the same data for all firefox aliases', function() {
+                        var fullNameData = settingsParser.parse('Firefox 30');
+                        var alias1Data = settingsParser.parse('FF 30');
+                        var alias2Data = settingsParser.parse('Fx 30');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                        assert.deepEqual(fullNameData, alias2Data);
+                    });
+
+                    it('should return the same data for all Internet Explorer aliases', function() {
+                        var fullNameData = settingsParser.parse('IE 11');
+                        var alias1Data = settingsParser.parse('Explorer 11');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all iOS Safari aliases', function() {
+                        var fullNameData = settingsParser.parse('iOS_Saf 7.1');
+                        var alias1Data = settingsParser.parse('iOS 7.1');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
+                    it('should return the same data for all BlackBerry Browser aliases', function() {
+                        var fullNameData = settingsParser.parse('BB 10');
+                        var alias1Data = settingsParser.parse('BlackBerry 10');
+
+                        assert.deepEqual(fullNameData, alias1Data);
+                    });
+
                 });
 
             });

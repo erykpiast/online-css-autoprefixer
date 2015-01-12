@@ -1,8 +1,8 @@
 import Cycle from 'cyclejs';
 
-var SettingsIntent = Cycle.createIntent([ 'settingsChange' ], function (view) {
+var SettingsIntent = Cycle.createIntent(function (view) {
     return {
-        settingsChange: view.settingsChange.map(ev => ev.target.value)
+        settingsChange$: view.get('settingsChange$').map(ev => ev.target.value)
     };
 });
 

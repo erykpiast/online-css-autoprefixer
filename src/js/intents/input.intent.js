@@ -1,8 +1,8 @@
 import Cycle from 'cyclejs';
 
-var InputIntent = Cycle.createIntent([ 'inputText' ], function (view) {
+var InputIntent = Cycle.createIntent(function (view) {
     return {
-        sourceChange: view.inputText.map(ev => ev.target.value)
+        sourceChange$: view.get('inputText$').map(ev => ev.target.value)
     };
 });
 

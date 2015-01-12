@@ -11,9 +11,13 @@ import SettingsView from './views/settings.view';
 import SettingsIntent from './intents/settings.intent';
 import SettingsModel from './models/settings.model';
 
+import RawConfigView from './views/raw-config.view';
+import RawConfigIntent from './intents/raw-config.intent';
+import RawConfigModel from './models/raw-config.model';
+
 
 Cycle.createRenderer('.autoprefixer__view-container--input').inject(InputView);
-Cycle.circularInject(InputModel, InputView, InputIntent);
+InputIntent.inject(InputView).inject(InputModel).inject(InputIntent);
 
 Cycle.createRenderer('.autoprefixer__view-container--output').inject(OutputView);
 OutputModel.inject(InputIntent);
@@ -22,3 +26,7 @@ OutputView.inject(OutputModel);
 Cycle.createRenderer('.autoprefixer__view-container--settings').inject(SettingsView);
 SettingsModel.inject(SettingsIntent);
 SettingsView.inject(SettingsModel);
+
+Cycle.createRenderer('.autoprefixer__view-container--raw-config').inject(RawConfigView);
+RawConfigModel.inject(RawConfigIntent);
+RawConfigView.inject(RawConfigModel);

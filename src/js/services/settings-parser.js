@@ -106,7 +106,7 @@ class SettingsParser {
     }
 
     parse(requirements) {
-        requirements = requirements.split(',');
+        requirements = requirements.split(',').map((req) => req.trim());
 
         var selected = [ ];
 

@@ -549,6 +549,45 @@ describe('SettingsParser instance test', function() {
 
             });
 
+            describe('Firefox ESR matcher', function() {
+
+                beforeEach(function() {
+                    parsed = settingsParser.parse('Firefox ESR');
+                });
+
+
+                it('Should return only Firefox 31', function() {
+                    assert.sameMembers(Object.keys(parsed), [ 'firefox' ]);
+                    assert.sameMembers(parsed.firefox, [ '31' ]);
+                });
+
+            });
+
+
+            describe('multiple matchers', function() {
+
+                beforeEach(function() {
+                    parsed = settingsParser.parse('> 1%, last 2 versions, Firefox ESR, Opera 12.1');
+                    console.log(parsed);
+                });
+
+
+                it('Should return correct browsers', function() {
+                    assert.sameMembers(Object.keys(parsed), [ 'chrome', 'firefox', 'ie', 'ios_saf', 'android', 'safari', 'opera' ]);
+                });
+
+                it('Should return correct browsers versions', function() {
+                    assert.sameMembers(parsed.chrome, [ '39', '38', '37', '36' ]);
+                    assert.sameMembers(parsed.firefox, [ '34', '33', '32', '31' ]);
+                    assert.sameMembers(parsed.ie, [ '11', '10', '9', '8' ]);
+                    assert.sameMembers(parsed['ios_saf'], [ '8.1', '8', '7.1', '7.0' ]);
+                    assert.sameMembers(parsed.android, [ '37', '4.4.4', '4.4', '4.1' ]);
+                    assert.sameMembers(parsed.safari, [ '8', '7.1' ]);
+                    assert.sameMembers(parsed.opera, [ '26', '25', '12.1' ]);
+                });
+
+            });
+
         });
 
     });

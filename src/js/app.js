@@ -20,13 +20,12 @@ Cycle.createRenderer('.autoprefixer__view-container--input').inject(InputView);
 InputIntent.inject(InputView).inject(InputModel).inject(InputIntent);
 
 Cycle.createRenderer('.autoprefixer__view-container--output').inject(OutputView);
-OutputModel.inject(InputIntent);
+OutputModel.inject(InputIntent, RawConfigModel);
 OutputView.inject(OutputModel);
 
 Cycle.createRenderer('.autoprefixer__view-container--settings').inject(SettingsView);
-SettingsModel.inject(SettingsIntent);
+SettingsModel.inject(SettingsIntent, RawConfigModel);
 SettingsView.inject(SettingsModel);
 
 Cycle.createRenderer('.autoprefixer__view-container--raw-config').inject(RawConfigView);
-RawConfigModel.inject(RawConfigIntent);
-RawConfigView.inject(RawConfigModel);
+RawConfigIntent.inject(RawConfigView).inject(RawConfigModel).inject(RawConfigIntent);

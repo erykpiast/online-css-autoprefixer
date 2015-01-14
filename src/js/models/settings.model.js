@@ -2,28 +2,37 @@ import Cycle from 'cyclejs';
 import Rx from 'rx';
 
 import getJson from '../services/get-json';
-// import storage from '../services/storage';
+import storage from '../services/storage';
 import SettingsParser from '../services/settings-parser';
 import caniuseDataNormalizer from '../services/caniuse-data-normalizer';
 
 
-var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigModel) {
-    var settingsParser;
-    var canIUseData = getJson('https://cdn.rawgit.com/Fyrd/caniuse/master/data.json').then(function(data) {
-        settingsParser = new SettingsParser(caniuseDataNormalizer.normalize(data));
-    });
-
+var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent) {
     return {
-        settings$: settingsIntent.get('settingsChange$')
-            .skipUntil(canIUseData)
-            .merge(Rx.Observable.fromPromise(canIUseData.then(() =>
-                settingsParser.parse('> 1%, last 2 versions, Firefox ESR, Opera 12.1')
-            )))
-            .merge(rawConfigModel.get('rawConfig$').map(function(rawConfig) {
-                try {
-                    return settingsParser.parse(rawConfig);
-                } catch(err) { }
-            }).filter((settings) => 'undefined' !== typeof settings))
+        settings$: Rx.Observable.merge(
+                settingsIntent.get('settingsChange$'),
+                Rx.Observable.combineLatest(
+                    rawConfigIntent.get('rawConfigChange$'),
+                    Rx.Observable.fromPromise(
+                        getJson('https://cdn.rawgit.com/Fyrd/caniuse/master/data.json').then((data) =>
+                            new SettingsParser(caniuseDataNormalizer.normalize(data))
+                        )
+                    ),
+                    (rawConfig, settingsParser) => [ rawConfig, settingsParser ]
+                )
+                .map(function([ rawConfig, settingsParser ]) {
+                    try {
+                        var settings = settingsParser.parse(rawConfig);
+
+                        storage.save('settings', rawConfig);
+
+                        return settings;
+                    } catch(err) { }
+                })
+                .filter((settings) =>
+                    'undefined' !== typeof settings
+                )
+            )
             .map(function(settings) {
                 // storage.save('settings', settingsParser.stringify(settings));
 

@@ -2,38 +2,39 @@ import Cycle from 'cyclejs';
 import autoprefixer from 'autoprefixer';
 import Rx from 'rx';
 
-import storage from '../services/storage';
 
-
-var OutputModel = Cycle.createModel(function (inputIntent, rawConfigModel) {
-    var processor;
-    var rawConfig = rawConfigModel.get('rawConfig$').startWith('> 1%, last 2 versions, Firefox ESR, Opera 12.1');
-    rawConfig.subscribe(function(config) {
-        var newProcessor = autoprefixer({
-            browsers: config.split(',').map((req) => req.trim()),
-            cascade: true
-        });
-
-        try {
-            newProcessor.process('color: #FFF', { safe: true });
-
-            processor = newProcessor;
-        } catch(err) {
-
-        }
-    });
-
+var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
     return {
         prefixed$: Rx.Observable.combineLatest(
-                inputIntent.get('sourceChange$')
-                    .startWith(storage.read('input')),
-                rawConfig,
-                (source, config) => ({
-                    source: source,
-                    config: config
-                })
+                inputModel.get('source$'),
+                settingsModel.get('settings$')
+                    .map((settings) => autoprefixer({
+                        // map browsers from { 'firefox': [ '37', '36' ], 'ie': [ '9' ] } to
+                        // [ 'firefox 37', 'firefox 36', 'ie 9' ]
+                        browsers: Object.keys(settings).map((browserName) =>
+                            settings[browserName].map((browserVersion) =>
+                                [ browserName, browserVersion ].join(' ')
+                            )
+                        ).reduce((prev, current) =>
+                            prev.concat(current)
+                        , []),
+                        cascade: true
+                    }))
+                    .filter(function(processor) {
+                        try {
+                            // check if settings are understandable by autoprefixer
+                            processor.process('color: #FFF', { safe: true });
+
+                            return true;
+                        } catch(err) {
+                            console.log(err);
+
+                            return false;
+                        }
+                    }),
+                (source, processor) => [ source, processor ]
             )
-            .map((input) => processor.process(input.source, { safe: true }).css)
+            .map(([ source, processor ]) => processor.process(source, { safe: true }).css)
     };
 });
 

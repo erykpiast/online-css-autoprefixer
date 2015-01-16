@@ -1,5 +1,5 @@
 import Cycle from 'cyclejs';
-import autoprefixer from 'autoprefixer';
+import autoprefixer from 'autoprefixer-core';
 import Rx from 'rx';
 
 

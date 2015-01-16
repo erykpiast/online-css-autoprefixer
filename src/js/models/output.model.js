@@ -15,9 +15,7 @@ var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
                             settings[browserName].map((browserVersion) =>
                                 [ browserName, browserVersion ].join(' ')
                             )
-                        ).reduce((prev, current) =>
-                            prev.concat(current)
-                        , []),
+                        ).reduce((prev, current) => prev.concat(current), []),
                         cascade: true
                     }))
                     .filter(function(processor) {

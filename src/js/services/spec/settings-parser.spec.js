@@ -275,113 +275,7 @@ describe('SettingsParser instance test', function() {
                         parsed = settingsParser.parse('Opera <= 10.6');
                         assert.sameMembers(parsed.opera, [ '10.5', '10.1', '10.0', '9.6', '9.5', '10.6' ]);
                     });
-                    
-                });
 
-            });
-
-
-            describe('newer than matcher', function() {
-
-                describe('not equal', function() {
-
-                    it('Should return only specified browser', function() {
-                        parsed = settingsParser.parse('Firefox > 30');
-                        assert.sameMembers(Object.keys(parsed), [ 'firefox' ], 'object contains browser(s) different than firefox');
-
-                        parsed = settingsParser.parse('Chrome > 34');
-                        assert.sameMembers(Object.keys(parsed), [ 'chrome' ], 'object contains browser(s) different than chrome');
-
-                        parsed = settingsParser.parse('IE > 7');
-                        assert.sameMembers(Object.keys(parsed), [ 'ie' ], 'object contains browser(s) different than ie');
-
-                        parsed = settingsParser.parse('iOS > 7');
-                        assert.sameMembers(Object.keys(parsed), [ 'ios_saf' ], 'object contains browser(s) different than ios_saf');
-
-                        parsed = settingsParser.parse('Android > 4.1');
-                        assert.sameMembers(Object.keys(parsed), [ 'android' ], 'object contains browser(s) different than android');
-
-                        parsed = settingsParser.parse('Safari > 7');
-                        assert.sameMembers(Object.keys(parsed), [ 'safari' ], 'object contains browser(s) different than safari');
-
-                        parsed = settingsParser.parse('Opera > 23');
-                        assert.sameMembers(Object.keys(parsed), [ 'opera' ], 'object contains browser(s) different than opera');
-                    });
-
-                    it('Should return only versions greater than specified', function() {
-                        parsed = settingsParser.parse('Firefox > 30');
-                        assert.sameMembers(parsed.firefox, [ '31', '32', '33', '34' ]);
-
-                        parsed = settingsParser.parse('Chrome > 34');
-                        assert.sameMembers(parsed.chrome, [ '35', '36', '37', '38', '39' ]);
-
-                        parsed = settingsParser.parse('IE > 7');
-                        assert.sameMembers(parsed.ie, [ '8', '9', '10', '11' ]);
-
-                        parsed = settingsParser.parse('iOS > 7');
-                        assert.sameMembers(parsed['ios_saf'], [ '7.1', '8', '8.1' ]);
-
-                        parsed = settingsParser.parse('Android > 4.1');
-                        assert.sameMembers(parsed.android, [ '4.2', '4.3', '4.4', '37' ]);
-
-                        parsed = settingsParser.parse('Safari > 7');
-                        assert.sameMembers(parsed.safari, [ '7.1', '8' ]);
-
-                        parsed = settingsParser.parse('Opera > 23');
-                        assert.sameMembers(parsed.opera, [ '24', '25', '26' ]);
-                    });
-
-                });
-
-
-                describe('equal', function() {
-
-                    it('Should return only specified browser', function() {
-                        parsed = settingsParser.parse('Firefox >= 30');
-                        assert.sameMembers(Object.keys(parsed), [ 'firefox' ], 'object contains browser(s) different than firefox');
-
-                        parsed = settingsParser.parse('Chrome >= 34');
-                        assert.sameMembers(Object.keys(parsed), [ 'chrome' ], 'object contains browser(s) different than chrome');
-
-                        parsed = settingsParser.parse('IE >= 7');
-                        assert.sameMembers(Object.keys(parsed), [ 'ie' ], 'object contains browser(s) different than ie');
-
-                        parsed = settingsParser.parse('iOS >= 7');
-                        assert.sameMembers(Object.keys(parsed), [ 'ios_saf' ], 'object contains browser(s) different than ios_saf');
-
-                        parsed = settingsParser.parse('Android >= 4.1');
-                        assert.sameMembers(Object.keys(parsed), [ 'android' ], 'object contains browser(s) different than android');
-
-                        parsed = settingsParser.parse('Safari >= 7');
-                        assert.sameMembers(Object.keys(parsed), [ 'safari' ], 'object contains browser(s) different than safari');
-
-                        parsed = settingsParser.parse('Opera >= 23');
-                        assert.sameMembers(Object.keys(parsed), [ 'opera' ], 'object contains browser(s) different than opera');
-                    });
-
-                    it('Should return only versions greater and equal than specified', function() {
-                        parsed = settingsParser.parse('Firefox >= 30');
-                        assert.sameMembers(parsed.firefox, [ '31', '32', '33', '34', '30' ]);
-
-                        parsed = settingsParser.parse('Chrome >= 34');
-                        assert.sameMembers(parsed.chrome, [ '35', '36', '37', '38', '39', '34' ]);
-
-                        parsed = settingsParser.parse('IE >= 7');
-                        assert.sameMembers(parsed.ie, [ '8', '9', '10', '11', '7' ]);
-
-                        parsed = settingsParser.parse('iOS >= 7');
-                        assert.sameMembers(parsed['ios_saf'], [ '7.1', '8', '8.1', '7.0' ]);
-
-                        parsed = settingsParser.parse('Android >= 4.1');
-                        assert.sameMembers(parsed.android, [ '4.2', '4.3', '4.4', '37', '4.1' ]);
-
-                        parsed = settingsParser.parse('Safari >= 7');
-                        assert.sameMembers(parsed.safari, [ '7.1', '8', '7' ]);
-
-                        parsed = settingsParser.parse('Opera >= 23');
-                        assert.sameMembers(parsed.opera, [ '24', '25', '26', '23' ]);
-                    });
-                    
                 });
 
             });
@@ -425,10 +319,10 @@ describe('SettingsParser instance test', function() {
                         assert.sameMembers(parsed.ie, [ '8' ]);
 
                         parsed = settingsParser.parse('iOS 7.0');
-                        assert.sameMembers(parsed['ios_saf'], [ '7' ]);
+                        assert.sameMembers(parsed['ios_saf'], [ '7.0' ]);
 
                         parsed = settingsParser.parse('Android 4.4.3');
-                        assert.sameMembers(parsed.android, [ '4.4' ]);
+                        assert.sameMembers(parsed.android, [ '4.4.3' ]);
 
                         parsed = settingsParser.parse('Safari 7');
                         assert.sameMembers(parsed.safari, [ '7' ]);
@@ -549,6 +443,7 @@ describe('SettingsParser instance test', function() {
 
             });
 
+
             describe('Firefox ESR matcher', function() {
 
                 beforeEach(function() {
@@ -591,7 +486,7 @@ describe('SettingsParser instance test', function() {
             describe('aliases', function() {
 
                 describe('last by browser matcher', function() {
-                    
+
                     it('should return the same data for all firefox aliases', function() {
                         var fullNameData = settingsParser.parse('last 2 Firefox versions');
                         var alias1Data = settingsParser.parse('last 2 FF versions');
@@ -626,7 +521,7 @@ describe('SettingsParser instance test', function() {
 
 
                 describe('older or equal matcher', function() {
-                    
+
                     it('should return the same data for all firefox aliases', function() {
                         var fullNameData = settingsParser.parse('Firefox <= 30');
                         var alias1Data = settingsParser.parse('FF <= 30');
@@ -661,7 +556,7 @@ describe('SettingsParser instance test', function() {
 
 
                 describe('newer or equal matcher', function() {
-                    
+
                     it('should return the same data for all firefox aliases', function() {
                         var fullNameData = settingsParser.parse('Firefox >= 30');
                         var alias1Data = settingsParser.parse('FF >= 30');
@@ -696,7 +591,7 @@ describe('SettingsParser instance test', function() {
 
 
                 describe('direct matcher', function() {
-                    
+
                     it('should return the same data for all firefox aliases', function() {
                         var fullNameData = settingsParser.parse('Firefox 30');
                         var alias1Data = settingsParser.parse('FF 30');
@@ -731,9 +626,37 @@ describe('SettingsParser instance test', function() {
 
             });
 
+
+            describe('error handling', function() {
+
+                it('Should throw error when empty requirement is passed', function() {
+                    assert.throws(function() {
+                        settingsParser.parse('');
+                    }, /^unknown requirements/);
+                });
+
+                it('Should throw error when unknown requirement is passed', function() {
+                    assert.throws(function() {
+                        settingsParser.parse('old browsers');
+                    }, /^unknown requirements/);
+                });
+
+                it('Should throw error when unknown browser is passed', function() {
+                    assert.throws(function() {
+                        settingsParser.parse('last 2 Aurora versions');
+                    }, /^unknown browser/);
+                });
+
+                it('Should throw error when unknown browser version is passed', function() {
+                    assert.throws(function() {
+                        settingsParser.parse('iOS 7.1.1');
+                    }, /^unknown browser version/);
+                });
+
+            });
+
         });
 
     });
 
 });
-

@@ -87,16 +87,24 @@ class SettingsParser {
                 regexp: /^(\w+) ([\d\.]+)$/,
                 select: function(browser, version) {
                     var data = this._byName(browser);
-                    var version = parseFloat(version, 10);
+                    var parsedVersion = parseFloat(version, 10);
 
-                    var last = (data.future && !isNaN(parseFloat(data.future[0], 10)) ? parseFloat(data.future[0], 10) : parseFloat(data.versions[0], 10));
-                    var first = parseFloat(data.versions[data.versions.length - 1], 10);
+                    var last = (data.future && !isNaN(parseFloat(data.future[0], 10)) ? data.future[0] : data.versions[0]);
+                    var first = data.versions[data.versions.length - 1];
 
 
-                    if(version > last) {
+                    if(parsedVersion > parseFloat(last, 10)) {
                         version = last;
-                    } else if(version < first) {
+                    } else if(parsedVersion < parseFloat(first, 10)) {
                         version = first;
+                    }
+
+                    if((data.versions.indexOf(version) === -1) &&
+                        (!data.future ||
+                           (data.future.indexOf(version) === -1)
+                        )
+                    ) {
+                        throw new Error('unknown browser version: ' + [ browser, version ].join(' '));
                     }
 
                     return [ [ data.name, version ].join(' ') ];
@@ -110,18 +118,25 @@ class SettingsParser {
 
         var selected = [ ];
 
-        requirements.forEach(function(requirement) {
-            Object.keys(this._requirements).forEach(function(reqName) {
+        var unrecognizedRequirements = requirements.filter(function(requirement) {
+            return !Object.keys(this._requirements).some(function(reqName) {
                 var req = this._requirements[reqName];
-                var match = requirement.match(req.regexp);
+
+                let match = requirement.match(req.regexp);
 
                 if(match) {
                     selected = selected.concat(req.select.apply(this, match.slice(1)));
 
-                    return;
+                    return true;
+                } else {
+                    return false;
                 }
             }, this);
         }, this);
+
+        if(unrecognizedRequirements.length) {
+            throw new Error('unknown requirements: ' + unrecognizedRequirements.join(','));
+        }
 
         return mapValues(
             groupBy(
@@ -159,6 +174,10 @@ class SettingsParser {
         name = name.toLowerCase();
         name = this._aliases[name] || name;
         var data = this._data.browsers[name];
+
+        if(!data) {
+            throw new Error('unknown browser ' + name);
+        }
 
         data.name = name;
 

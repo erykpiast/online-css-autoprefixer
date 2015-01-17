@@ -1,37 +1,37 @@
 import Cycle from 'cyclejs';
 import Rx from 'rx';
+import browserslist from 'browserslist';
+import groupBy from 'lodash.groupby';
+import mapValues from 'map-values';
 
-import getJson from '../services/get-json';
-import storage from '../services/storage';
-import SettingsParser from '../services/settings-parser';
-import caniuseDataNormalizer from '../services/caniuse-data-normalizer';
+// import storage from '../services/storage';
 
 
 var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent) {
     return {
         settings$: Rx.Observable.merge(
                 settingsIntent.get('settingsChange$'),
-                Rx.Observable.combineLatest(
-                    rawConfigIntent.get('rawConfigChange$'),
-                    Rx.Observable.fromPromise(
-                        getJson('https://cdn.rawgit.com/Fyrd/caniuse/master/data.json').then((data) =>
-                            new SettingsParser(caniuseDataNormalizer.normalize(data))
+                rawConfigIntent.get('rawConfigChange$')
+                    .map(function(rawConfig) {
+                        try {
+                            return browserslist(rawConfig.split(',').map((req) => req.trim()).join(','));
+                        } catch(err) {
+                            console.log(err);
+                        }
+                    })
+                    .filter((browsers) => !!browsers)
+                    .map((browsers) => mapValues(
+                        groupBy(
+                            browsers.map((browser) => ({
+                                browser: browser.split(' ')[0],
+                                version: browser.split(' ')[1]
+                            })),
+                            'browser'
+                        ),
+                        (browserVersions) => browserVersions.map(
+                            (browserVersion) => browserVersion.version
                         )
-                    ),
-                    (rawConfig, settingsParser) => [ rawConfig, settingsParser ]
-                )
-                .map(function([ rawConfig, settingsParser ]) {
-                    try {
-                        var settings = settingsParser.parse(rawConfig);
-
-                        storage.save('settings', rawConfig);
-
-                        return settings;
-                    } catch(err) { }
-                })
-                .filter((settings) =>
-                    'undefined' !== typeof settings
-                )
+                    ))
             )
             .map(function(settings) {
                 // storage.save('settings', settingsParser.stringify(settings));

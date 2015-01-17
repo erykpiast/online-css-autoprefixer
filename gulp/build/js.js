@@ -30,7 +30,8 @@ function buildJsTask() {
 
 var bundler = watchify(browserify(extend({
         debug: true,
-        entry: true
+        entry: true,
+        fullPaths: true
     }, watchify.args))
     .add(es6ify.runtime)
     .add(config.src.js.main)

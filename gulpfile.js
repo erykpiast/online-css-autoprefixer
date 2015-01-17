@@ -3,6 +3,9 @@
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
 
+var config = require('./gulp/config');
+
+
 gulp.task('lint', require('./gulp/lint'));
 gulp.task('webserver', require('./gulp/web-server'));
 
@@ -24,3 +27,5 @@ gulp.task('test', function(cb) {
 });
 
 gulp.task('default', [ 'lint', 'build', 'webserver' ]);
+
+gulp.watch(config.src.js.files, [ 'lint', 'build:js' ]);

@@ -24,23 +24,15 @@ function buildJsTask() {
         .pipe(connect.reload());
 }
 
-var bundler = watchify(browserify(config.src.js.main, extend({
+var bundler = browserify(config.src.js.main, {
         debug: true,
         entry: true,
         fullPaths: true // it helps somehow in situation when trying to directly load module that is dependency of something (browserslist and caniuse-db)
-    }, watchify.args))
+    })
     .transform(to5ify.configure({
         only: /^(?!.*node_modules)+.+\.js$/,
         sourceMap: 'inline',
         sourceMapRelative: __dirname
-    }))
-);
-
-bundler.on('update', function() {
-    
-    gulp.start('lint');
-    gulp.start('build:js');
-
-}); 
+    }));
 
 module.exports = buildJsTask;

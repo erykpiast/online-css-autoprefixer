@@ -8,15 +8,11 @@ var connect = require('gulp-connect');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var browserify = require('browserify');
-var es6ify = require('es6ify');
+var to5ify = require('6to5ify');
 
 var config = require('../config');
 
 var lintTask = require('../lint');
-
-es6ify.traceurOverrides = {
-    asyncFunctions: true
-};
 
 function buildJsTask() {
     return bundler.bundle()
@@ -28,14 +24,16 @@ function buildJsTask() {
         .pipe(connect.reload());
 }
 
-var bundler = watchify(browserify(extend({
+var bundler = watchify(browserify(config.src.js.main, extend({
         debug: true,
         entry: true,
-        fullPaths: true
+        fullPaths: true // it helps somehow in situation when trying to directly load module that is dependency of something (browserslist and caniuse-db)
     }, watchify.args))
-    .add(es6ify.runtime)
-    .add(config.src.js.main)
-    .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
+    .transform(to5ify.configure({
+        only: /^(?!.*node_modules)+.+\.js$/,
+        sourceMap: 'inline',
+        sourceMapRelative: __dirname
+    }))
 );
 
 bundler.on('update', function() {

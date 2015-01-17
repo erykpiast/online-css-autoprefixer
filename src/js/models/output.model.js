@@ -1,11 +1,9 @@
 import Cycle from 'cyclejs';
 import autoprefixer from 'autoprefixer-core';
-import Rx from 'rx';
-
 
 var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
     return {
-        prefixed$: Rx.Observable.combineLatest(
+        prefixed$: Cycle.Rx.Observable.combineLatest(
                 inputModel.get('source$'),
                 settingsModel.get('settings$')
                     .map((settings) => autoprefixer({

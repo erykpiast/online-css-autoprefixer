@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/erykpiast/online-css-autoprefixer",
   "devDependencies": {
+    "6to5ify": "^3.1.2",
     "browserify": "~8.1",
     "chai": "~1.10",
     "es6ify": "~1.6",

@@ -29,3 +29,4 @@ gulp.task('test', function(cb) {
 gulp.task('default', [ 'lint', 'build', 'webserver' ]);
 
 gulp.watch(config.src.js.files, [ 'lint', 'build:js' ]);
+gulp.watch([ config.test.files, config.src.js.files ], [ 'test' ]);

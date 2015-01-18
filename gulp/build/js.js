@@ -26,8 +26,7 @@ function buildJsTask() {
 
 var bundler = browserify(config.src.js.main, {
         debug: true,
-        entry: true,
-        fullPaths: true // it helps somehow in situation when trying to directly load module that is dependency of something (browserslist and caniuse-db)
+        entry: true
     })
     .transform(to5ify.configure({
         only: /^(?!.*node_modules)+.+\.js$/,

@@ -44,6 +44,7 @@
     "karma-mocha": "~0.1",
     "karma-mocha-reporter": "~0.3",
     "karma-phantomjs-launcher": "~0.1",
+    "lodash.foreach": "^2.4.1",
     "mocha": "~2.1",
     "proxyquireify": "~1.1",
     "run-sequence": "^1.0.2",

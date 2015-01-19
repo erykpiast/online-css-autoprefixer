@@ -1,7 +1,5 @@
 import Cycle from 'cyclejs';
 
-import settingsDirectView from './settings-direct.view';
-
 var h = Cycle.h;
 
 var SettingsView = Cycle.createView(function (model) {
@@ -15,7 +13,7 @@ var SettingsView = Cycle.createView(function (model) {
                 ': ',
                 h('span', {}, settings[browserName].join(', '))
             ]))),
-            undefined && settingsDirectView(settings)
+            h('oca-settings-direct', {}, [])
         ]))
   };
 });

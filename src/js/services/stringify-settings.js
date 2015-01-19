@@ -16,7 +16,7 @@ import each from 'lodash.foreach';
  *                 @property {boolean} settings.versionComparison[browser].olderThan.equal - true if lower or equal
  *                 @property {string} settings.versionComparison[browser].olderThan.version - version to compare with
  *     @property {array} [settings.newerThan = undefined] - newer (or equal) than matcher
- *         @property {number} settings.newerThan[browser] - browser chosen by newerThan matcher    
+ *         @property {number} settings.newerThan[browser] - browser chosen by newerThan matcher
  *     @property {array} [settings.direct = undefined] - direct matcher
  *         @property {number} settings.direct[browser] - browser chosen by direct matcher (includes ESR matcher)
  */
@@ -30,8 +30,8 @@ function stringify (settings) {
                     autoprefixerConfig.push([
                         '>',
                         popularity + '%',
-                        (country !== 'global' ? 'in ' + country : '')
-                    ].join(' '));
+                        (country !== 'global' ? 'in ' + country : undefined)
+                    ].filter(part => !!part).join(' '));
                 });
             break;
             case 'lastVersions':
@@ -39,8 +39,9 @@ function stringify (settings) {
                     autoprefixerConfig.push([
                         'last',
                         versions,
-                        (browser !== 'all' ? browser : '', 'versions')
-                    ].join(' '));
+                        (browser !== 'all' ? browser : undefined),
+                        'versions'
+                    ].filter(part => !!part).join(' '));
                 });
             break;
             case 'versionComparison':
@@ -63,7 +64,6 @@ function stringify (settings) {
             default:
         }
     });
-
 
     return autoprefixerConfig.join(',');
 }

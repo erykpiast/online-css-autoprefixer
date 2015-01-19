@@ -18,6 +18,8 @@ function runTestsTask() {
         .on('error', function(err) {
             // Make sure failed tests cause gulp to exit non-zero
             gutil.log('Karma error:', err.message);
+
+            return true;
         });
 };
 

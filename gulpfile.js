@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
 
 var config = require('./gulp/config');
@@ -22,7 +23,11 @@ gulp.task('test', function(cb) {
         [ 'lint', 'test:lint' ],
         'test:build',
         'test:run',
-        cb
+        function() {
+            gutil.log('test task finished');
+
+            cb();
+        }
     );
 });
 

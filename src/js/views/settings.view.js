@@ -15,7 +15,7 @@ var SettingsView = Cycle.createView(function (model) {
                 ': ',
                 h('span', {}, settings[browserName].join(', '))
             ]))),
-            settingsDirectView(settings)
+            undefined && settingsDirectView(settings)
         ]))
   };
 });

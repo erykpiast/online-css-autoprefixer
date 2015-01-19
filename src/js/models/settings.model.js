@@ -2,14 +2,13 @@ import Cycle from 'cyclejs';
 
 import settingsParser from '../services/settings-parser';
 import storage from '../services/storage';
-import stringifySettings from '../services/stringify-settings';
 
 
 var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent) {
     return {
         settings$: Cycle.Rx.Observable.merge(
                 settingsIntent.get('settingsChange$')
-                    .map((settings) => stringifySettings(settings)),
+                    .map((settings) => settingsParser.stringify(settings)),
                 rawConfigIntent.get('rawConfigChange$')
             )
             .map(function(rawConfig) {
@@ -28,18 +27,6 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
                 storage.save('settings', rawConfig);
             })
             .map(({ browsers }) => browsers)
-            .map((browsers) => mapValues(
-                groupBy(
-                    browsers.map((browser) => ({
-                        browser: browser.split(' ')[0],
-                        version: browser.split(' ')[1]
-                    })),
-                    'browser'
-                ),
-                (browserVersions) => browserVersions.map(
-                    (browserVersion) => browserVersion.version
-                )
-            ))
     };
 });
 

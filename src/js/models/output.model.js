@@ -28,9 +28,8 @@ var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
                             return false;
                         }
                     }),
-                (source, processor) => [ source, processor ]
+                (source, processor) => processor.process(source, { safe: true }).css
             )
-            .map(([ source, processor ]) => processor.process(source, { safe: true }).css)
     };
 });
 

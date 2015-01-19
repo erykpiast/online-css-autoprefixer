@@ -54,6 +54,7 @@
   "dependencies": {
     "autoprefixer-core": "^5.0.0",
     "browserslist": "^0.1.1",
+    "caniuse-db": "^1.0.30000048",
     "cyclejs": "^0.9.0",
     "lodash.groupby": "^2.4.1",
     "lodash.indexby": "^2.4.1",

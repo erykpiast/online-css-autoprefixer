@@ -13,12 +13,16 @@ gulp.task('webserver', require('./gulp/web-server'));
 gulp.task('build:js', require('./gulp/build/js'));
 gulp.task('build:html', require('./gulp/build/html'));
 gulp.task('build:css', require('./gulp/build/css'));
-gulp.task('build', [ 'build:js', 'build:html', 'build:css' ]);
+gulp.task('_build', [ 'build:js', 'build:html', 'build:css' ]);
+gulp.task('build', function() {
+    gulp.watch(config.src.js.files, [ 'lint', 'build:js' ]);
+    gulp.start([ '_build' ]);
+});
 
 gulp.task('test:lint', require('./gulp/test/lint'));
 gulp.task('test:build', require('./gulp/test/build'));
 gulp.task('test:run', require('./gulp/test/run'));
-gulp.task('test', function(cb) {
+gulp.task('_test', function(cb) {
     runSequence(
         [ 'lint', 'test:lint' ],
         'test:build',
@@ -30,8 +34,9 @@ gulp.task('test', function(cb) {
         }
     );
 });
+gulp.task('test', function() {
+    gulp.watch([ config.test.files, config.src.js.files ], [ '_test' ]);
+    gulp.start('_test');
+});
 
 gulp.task('default', [ 'lint', 'build', 'webserver' ]);
-
-gulp.watch(config.src.js.files, [ 'lint', 'build:js' ]);
-gulp.watch([ config.test.files, config.src.js.files ], [ 'test' ]);

@@ -11,6 +11,10 @@ import SettingsView from './views/settings.view';
 import SettingsIntent from './intents/settings.intent';
 import SettingsModel from './models/settings.model';
 
+import SettingsView from './views/settings.view';
+import SettingsIntent from './intents/settings.intent';
+import SettingsModel from './models/settings.model';
+
 import RawConfigView from './views/raw-config.view';
 import RawConfigIntent from './intents/raw-config.intent';
 import RawConfigModel from './models/raw-config.model';

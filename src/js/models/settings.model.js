@@ -1,8 +1,6 @@
 import Cycle from 'cyclejs';
-import browserslist from 'browserslist';
-import groupBy from 'lodash.groupby';
-import mapValues from 'map-values';
 
+import settingsParser from '../services/settings-parser';
 import storage from '../services/storage';
 import stringifySettings from '../services/stringify-settings';
 
@@ -19,7 +17,7 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
 
                 try {
                     return {
-                        browsers: browserslist(normalizedRawConfig),
+                        browsers: settingsParser.parse(normalizedRawConfig),
                         rawConfig: rawConfig
                     };
                 } catch(err) { }

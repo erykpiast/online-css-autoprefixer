@@ -9,6 +9,7 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var browserify = require('browserify');
 var to5ify = require('6to5ify');
+var aliasify = require('aliasify');
 
 var config = require('../config');
 
@@ -32,6 +33,12 @@ var bundler = browserify(config.src.js.main, {
         only: /^(?!.*node_modules)+.+\.js$/,
         sourceMap: 'inline',
         sourceMapRelative: __dirname
+    }))
+    .transform(aliasify.configure({
+        aliases: {
+            'polymer': '../../shims/polymer.js'
+        },
+        configDir: __dirname
     }));
 
 module.exports = buildJsTask;

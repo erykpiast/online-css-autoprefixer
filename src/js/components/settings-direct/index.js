@@ -1,27 +1,28 @@
 import Cycle from 'cyclejs';
-import Polymer from 'polymer';
+import xtag from 'x-tag';
 
 import View from './view';
 import Intent from './intent';
 import Model from './model';
 
 
-Polymer('oca-settings-direct', {
-    created: function() {
-        this.model = Model();
-        this.view = View();
-        this.intent = Intent();
+xtag.register('oca-settings-direct', {
+    lifecycle: {
+        created: function() {
+            this._model = Model();
+            this._view = View();
+            this._intent = Intent();
 
-        console.log('created', this.shadowRoot);
-
-        this.intent.inject(this.view).inject(this.model).inject(this.intent);
+            this._intent.inject(this._view).inject(this._model).inject(this._intent);
+            Cycle.createRenderer(this).inject(this._view);
+        }
     },
-    ready: function() {
-        Cycle.createRenderer(this.shadowRoot).inject(this.view);
+    accessors: {
+        selectedBrowsers: {
+            set: function(value) {
+                console.log(JSON.parse(value));
+            },
+            attribute: { string: '{}' }
+        }
     }
 });
-
-var el = document.createElement('div');
-el.innerHTML = '<polymer-element name="oca-settings-direct"><template></template></polymer-element>';
-
-document.body.appendChild(el);

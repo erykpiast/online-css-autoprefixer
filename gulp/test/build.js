@@ -39,7 +39,7 @@ var bundler = (function createBundler() {
     }))
     .transform(aliasify.configure({
         aliases: {
-            'polymer': '../../shims/polymer.js'
+            'x-tag': '../../shims/x-tag.js'
         },
         configDir: __dirname
     }));

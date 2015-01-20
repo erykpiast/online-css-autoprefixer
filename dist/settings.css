@@ -1,0 +1,15 @@
+/* line 6, /home/eryk/online-css-autoprefixer/src/css/settings.scss */
+.autoprefixer__settings__direct__browsers, .autoprefixer__settings__direct__browser__versions {
+  padding: 0;
+  list-style-type: none; }
+/* line 11, /home/eryk/online-css-autoprefixer/src/css/settings.scss */
+.autoprefixer__settings__direct__browsers {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row; }
+
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNldHRpbmdzLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSx1RUFBc0U7QUFDdEU7RUFDRSxZQUFXO0VBQ1gsdUJBQXNCLEVBQUU7QUFDMUIsd0VBQXVFO0FBQ3ZFO0VBQ0UsdUJBQWM7RUFBZCxzQkFBYztFQUFkLGVBQWM7RUFDZCw2QkFBb0I7RUFBcEIseUJBQW9CO0VBQXBCLHFCQUFvQixFQUFFIiwiZmlsZSI6InNldHRpbmdzLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi8qIGxpbmUgNiwgL2hvbWUvZXJ5ay9vbmxpbmUtY3NzLWF1dG9wcmVmaXhlci9zcmMvY3NzL3NldHRpbmdzLnNjc3MgKi9cbi5hdXRvcHJlZml4ZXJfX3NldHRpbmdzX19kaXJlY3RfX2Jyb3dzZXJzLCAuYXV0b3ByZWZpeGVyX19zZXR0aW5nc19fZGlyZWN0X19icm93c2VyX192ZXJzaW9ucyB7XG4gIHBhZGRpbmc6IDA7XG4gIGxpc3Qtc3R5bGUtdHlwZTogbm9uZTsgfVxuLyogbGluZSAxMSwgL2hvbWUvZXJ5ay9vbmxpbmUtY3NzLWF1dG9wcmVmaXhlci9zcmMvY3NzL3NldHRpbmdzLnNjc3MgKi9cbi5hdXRvcHJlZml4ZXJfX3NldHRpbmdzX19kaXJlY3RfX2Jyb3dzZXJzIHtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IHJvdzsgfVxuXG4iXSwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0= */

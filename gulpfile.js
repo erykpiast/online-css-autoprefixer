@@ -16,6 +16,7 @@ gulp.task('build:css', require('./gulp/build/css'));
 gulp.task('_build', [ 'build:js', 'build:html', 'build:css' ]);
 gulp.task('build', function() {
     gulp.watch(config.src.js.files, [ 'lint', 'build:js' ]);
+    gulp.watch(config.src.css.files, [ 'build:css' ]);
     gulp.start([ '_build' ]);
 });
 

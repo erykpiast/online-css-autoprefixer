@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var connect = require('gulp-connect');
@@ -12,6 +13,9 @@ function buildCssTask() {
     return gulp.src(config.src.css.files)
         .pipe(sourcemaps.init())
         .pipe(sass())
+        .on('error', function(err) {
+            gutil.log('SASS error', err);
+        })
         .pipe(autoprefixer({
             browsers: [ '> 1%', 'last 2 versions' ],
             cascade: false
@@ -20,7 +24,5 @@ function buildCssTask() {
         .pipe(gulp.dest(config.dist.css.dir))
         .pipe(connect.reload());
 };
-
-gulp.watch(config.src.css.files, buildCssTask);
 
 module.exports = buildCssTask;

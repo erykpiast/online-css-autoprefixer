@@ -36,7 +36,7 @@ var bundler = browserify(config.src.js.main, {
     }))
     .transform(aliasify.configure({
         aliases: {
-            'polymer': '../../shims/polymer.js'
+            'x-tag': '../../shims/x-tag.js'
         },
         configDir: __dirname
     }));

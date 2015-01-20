@@ -1,0 +1,21 @@
+.autoprefixer__settings {
+
+    &__direct {
+
+        &__browsers,
+        &__browser__versions {
+            padding: 0;
+            list-style-type: none;
+        }
+
+        &__browsers {
+            display: flex;
+            flex-direction: row;
+        }
+
+        &__browser {
+            
+        }
+    }
+
+}

@@ -1,5 +1,7 @@
 import Cycle from 'cyclejs';
 
+import './components';
+
 import InputView from './views/input.view';
 import InputIntent from './intents/input.intent';
 import InputModel from './models/input.model';

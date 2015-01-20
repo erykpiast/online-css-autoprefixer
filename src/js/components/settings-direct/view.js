@@ -13,21 +13,23 @@ var availableBrowsers = mapValues(caniuse.agents, function(browser) {
 
 
 export default function createSettingsDirectView() {
-    var SettingsDirectView = Cycle.createIntent(function(settings) {
-        return h('form.autoprefixer__settings__direct', {}, [
-            h('fieldset', {}, [
-                h('legend', {}, 'Direct'),
-                h('ul', {}, Object.keys(availableBrowsers).map((browserName) => h('li', { }, [
-                    h('fieldset', {}, [
-                        h('legend', {}, availableBrowsers[browserName].name),
-                        h('ul', {}, availableBrowsers[browserName].forEach((browserVersion) => h('li', { }, [
-                            h('input[type=checkbox][id="' + (browserName + '_' + browserVersion) + '"]', { checked: settings[browserName].versions.indexOf(browserVersion) !== -1 }),
-                            h('label[for="' + (browserName + '_' + browserVersion) + '"]', { }, browserVersion)
-                        ])))
-                    ])
-                ])))
-            ])
-        ]);
+    var SettingsDirectView = Cycle.createView(function(settings) {
+        return {
+            vtree$: settings.get('settings$').map((settings) => h('form.autoprefixer__settings__direct', {}, [
+                h('fieldset', {}, [
+                    h('legend', {}, 'Direct'),
+                    h('ul', {}, Object.keys(availableBrowsers).map((browserName) => h('li', { }, [
+                        h('fieldset', {}, [
+                            h('legend', {}, availableBrowsers[browserName].name),
+                            h('ul', {}, availableBrowsers[browserName].versions.forEach((browserVersion) => h('li', { }, [
+                                h('input[type=checkbox][id="' + (browserName + '_' + browserVersion) + '"]', { checked: settings[browserName].versions.indexOf(browserVersion) !== -1 }),
+                                h('label[for="' + (browserName + '_' + browserVersion) + '"]', { }, browserVersion)
+                            ])))
+                        ])
+                    ])))
+                ])
+            ]))
+        };
     });
 
     return SettingsDirectView;

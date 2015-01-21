@@ -1,15 +1,6 @@
 import Cycle from 'cyclejs';
-import mapValues from 'map-values';
-import caniuse from 'caniuse-db/data';
+import { h } from 'cyclejs';
 
-var h = Cycle.h;
-
-var availableBrowsers = mapValues(caniuse.agents, function(browser) {
-    return {
-        name: browser.browser,
-        versions: browser.versions.filter((version) => !!version).map((version) => version.split('-').reverse()[0])
-    };
-});
 
 var componentClass = 'autoprefixer__settings__direct';
 var browsersListClass = componentClass + '__browsers';
@@ -19,39 +10,34 @@ var browserVersionClass = browserClass + '__version';
 
 
 export default function createSettingsDirectView() {
-    var SettingsDirectView = Cycle.createView(function (settingsModel) {
+    var SettingsDirectView = Cycle.createView(function (settingsDirectModel) {
         return {
-            vtree$: Cycle.Rx.Observable.combineLatest(
-                    settingsModel.get('selectedBrowsers$'),
-                    Cycle.Rx.Observable.just(availableBrowsers, Cycle.Rx.Scheduler.timeout),
-                    (selectedBrowsers, availableBrowsers) => [ selectedBrowsers, availableBrowsers ]
-                ).map(([ selectedBrowsers, availableBrowsers ]) => h('form', {
+            vtree$: settingsDirectModel.get('browsers$').map((browsers) => h('form', {
                         className: componentClass
                     }, h('fieldset', [
                         h('legend', {}, 'Direct'),
                         h('ul', {
                                 className: browsersListClass
                             },
-                            Object.keys(availableBrowsers).map((browserName) => h('li', {
+                            Object.keys(browsers).map((browserName) => h('li', {
                                     className: browserClass
                                 }, h('fieldset', [
-                                    h('legend', availableBrowsers[browserName].name),
+                                    h('legend', browsers[browserName].name),
                                     h('ul', {
                                             className: browserVersionsClass
                                         },
-                                        availableBrowsers[browserName].versions.map((browserVersion) => h('li', {
+                                        browsers[browserName].versions.map((browserVersion) => h('li', {
                                                 className: browserVersionClass
                                             }, [
                                                 h('input', {
-                                                    id: browserName + '_' + browserVersion,
+                                                    id: browserName + '_' + browserVersion.name,
                                                     type: 'checkbox',
-                                                    checked: selectedBrowsers[browserName] &&
-                                                        selectedBrowsers[browserName].versions.indexOf(browserVersion) !== -1,
-                                                    onchange: 'selectedBrowsersChange$'
+                                                    checked: browserVersion.selected,
+                                                    onchange: 'settingsChange$'
                                                 }),
                                                 h('label', {
-                                                    htmlFor: browserName + '_' + browserVersion
-                                                }, browserVersion)
+                                                    htmlFor: browserName + '_' + browserVersion.name
+                                                }, browserVersion.name)
                                             ])
                                         )
                                     )

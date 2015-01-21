@@ -47,7 +47,7 @@ export default function createSettingsDirectView() {
                                                     type: 'checkbox',
                                                     checked: selectedBrowsers[browserName] &&
                                                         selectedBrowsers[browserName].versions.indexOf(browserVersion) !== -1,
-                                                    onchange: 'settingsChange$'
+                                                    onchange: 'selectedBrowsersChange$'
                                                 }),
                                                 h('label', {
                                                     htmlFor: browserName + '_' + browserVersion

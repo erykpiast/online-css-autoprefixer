@@ -14,7 +14,7 @@ function buildCssTask() {
         .pipe(sourcemaps.init())
         .pipe(sass())
         .on('error', function(err) {
-            gutil.log('SASS error', err);
+            gutil.log('SASS error:', err);
         })
         .pipe(autoprefixer({
             browsers: [ '> 1%', 'last 2 versions' ],

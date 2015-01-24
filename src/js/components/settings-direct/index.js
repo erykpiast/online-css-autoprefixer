@@ -1,7 +1,6 @@
 import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 import xtag from 'x-tag';
-import { EventEmitter } from 'events';
 
 import View from './view';
 import Intent from './intent';
@@ -14,16 +13,24 @@ xtag.register('oca-settings-direct', {
             this._model = Model();
             this._view = View();
             this._intent = Intent();
-            this._privateEventBus = new EventEmitter();
+            var attributes$ = this.attributes$ = new Rx.Subject();
 
             this._attributes = Cycle.createDataFlowSource({
-                selectedBrowsers$: Rx.Observable.fromEvent(this._privateEventBus, 'attrchange')
+                selectedBrowsers$: attributes$
                     .filter((ev) => (ev.attrName === 'selectedBrowsers'))
                     .tap(console.log.bind(console, 'first side'))
             });
 
+
+            var browsers$ = this._browsers$ = new Rx.Subject();
+
+            this._browsers = Cycle.createDataFlowSource({
+                browsers$: browsers$
+                    .tap(console.log.bind(console, 'browsers'))
+            });
+
             this._intent.inject(this._view, this._attributes);
-            this._view.inject(this._model);
+            this._view.inject(this._browsers);
             this._model.inject(this._intent);
             Cycle.createRenderer(this).inject(this._view);
         },
@@ -34,13 +41,23 @@ xtag.register('oca-settings-direct', {
     accessors: {
         selectedBrowsers: {
             set: function(value) {
-                setTimeout(function() {
-                    this._privateEventBus.emit('attrchange', {
-                        attrName: 'selectedBrowsers',
-                        attrValue: value
-                    });
-                }.bind(this), 500);
-                
+                this.attributes$.onNext({
+                    attrName: 'selectedBrowsers',
+                    attrValue: value
+                });
+
+                this._browsers$.onNext({
+                    'chrome': {
+                        name: 'Guugle Krom',
+                        versions: [{
+                            name: '31',
+                            selected: true
+                        }, {
+                            name: '30',
+                            selected: false
+                        }]
+                    }
+                })
 
                 return value;
             },

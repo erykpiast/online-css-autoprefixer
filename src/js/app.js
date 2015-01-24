@@ -26,6 +26,7 @@ Cycle.createRenderer('.autoprefixer__view-container--input').inject(InputView);
 InputIntent.inject(InputView).inject(InputModel).inject(InputIntent);
 
 Cycle.createRenderer('.autoprefixer__view-container--output').inject(OutputView);
+
 OutputModel.inject(InputModel, SettingsModel);
 OutputView.inject(OutputModel);
 

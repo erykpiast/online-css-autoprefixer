@@ -19,12 +19,12 @@ xtag.register('oca-test-component', {
                 test$: testSubject
             });
 
-            this._intent.inject(this._view);
+            this._intent.inject(testSource);
             this._view.inject(this._model);
-            this._model.inject(testSubject);
+            this._model.inject(this._intent);
             Cycle.createRenderer(this).inject(this._view);
 
-            testSubject.onNext('dupa dupa 2');
+            testSubject.onNext('dupa dupa 3');
         },
         inserted: function() {
             console.log('inserted');

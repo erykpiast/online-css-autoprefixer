@@ -1,5 +1,8 @@
 import Cycle from 'cyclejs';
 import { h } from 'cyclejs';
+import browserslist from 'browserslist';
+
+var firefoxEsr = browserslist('Firefox ESR').map((browser) => browser.split(' ')[1]);
 
 
 var componentClass = 'autoprefixer__settings__direct';
@@ -26,18 +29,26 @@ export default function createSettingsDirectView() {
                                     h('ul', {
                                             className: browserVersionsClass
                                         },
-                                        browsers[browserName].versions.map((browserVersion) => h('li', {
+                                        browsers[browserName].versions
+                                            .reverse()
+                                            .map((browserVersion) => h('li', {
                                                 className: browserVersionClass
                                             }, [
                                                 h('input', {
                                                     id: browserName + '_' + browserVersion.name,
                                                     type: 'checkbox',
                                                     checked: browserVersion.selected,
-                                                    onchange: 'settingsChange$'
+                                                    onchange: 'settingsChange$',
+                                                    'data-version': browserVersion.name
                                                 }),
                                                 h('label', {
                                                     htmlFor: browserName + '_' + browserVersion.name
-                                                }, browserVersion.name)
+                                                }, browserVersion.name +
+                                                    ((browserName === 'firefox') && (firefoxEsr.indexOf(browserVersion.name) !== -1) ?
+                                                        ' (ESR)' :
+                                                        ''
+                                                    )
+                                                )
                                             ])
                                         )
                                     )

@@ -3,7 +3,6 @@ import { Rx } from 'cyclejs';
 import mapValues from 'map-values';
 import caniuse from 'caniuse-db/data';
 
-
 var availableBrowsers = mapValues(caniuse.agents, function(browser) {
     return {
         name: browser.browser,

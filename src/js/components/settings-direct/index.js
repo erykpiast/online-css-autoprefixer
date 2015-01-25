@@ -19,7 +19,6 @@ xtag.register('oca-settings-direct', {
             this._attributes = Cycle.createDataFlowSource({
                 selectedBrowsers$: Rx.Observable.fromEvent(this._privateEventBus, 'attrchange')
                     .filter((ev) => (ev.attrName === 'selectedBrowsers'))
-                    .tap(console.log.bind(console, 'first side'))
             });
 
             this._intent.inject(this._view, this._attributes);
@@ -34,13 +33,10 @@ xtag.register('oca-settings-direct', {
     accessors: {
         selectedBrowsers: {
             set: function(value) {
-                setTimeout(function() {
-                    this._privateEventBus.emit('attrchange', {
-                        attrName: 'selectedBrowsers',
-                        attrValue: value
-                    });
-                }.bind(this), 500);
-                
+                this._privateEventBus.emit('attrchange', {
+                    attrName: 'selectedBrowsers',
+                    attrValue: value
+                });
 
                 return value;
             },

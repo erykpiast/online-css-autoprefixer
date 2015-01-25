@@ -13,10 +13,10 @@ var SettingsView = Cycle.createView(function (model) {
                 ': ',
                 h('span', {}, settings[browserName].join(', '))
             ]))),
-            // h('oca-settings-direct', {
-            //     selectedBrowsers: JSON.stringify(settings)
-            // }, []),
-            h('oca-test-component')
+            h('oca-settings-direct', {
+                selectedBrowsers: JSON.stringify(settings)
+            }, [])/*,
+            h('oca-test-component')*/
         ]))
   };
 });

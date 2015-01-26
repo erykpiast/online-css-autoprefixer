@@ -1,7 +1,6 @@
 import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 import xtag from 'x-tag';
-import { EventEmitter } from 'events';
 
 import View from './view';
 import Intent from './intent';
@@ -11,14 +10,15 @@ import Model from './model';
 xtag.register('oca-settings-direct', {
     lifecycle: {
         created: function() {
+            var attributes$ = this.attributes$ = new Rx.Subject();
+
             this._model = Model();
             this._view = View();
             this._intent = Intent();
-            this._privateEventBus = new EventEmitter();
-
             this._attributes = Cycle.createDataFlowSource({
-                selectedBrowsers$: Rx.Observable.fromEvent(this._privateEventBus, 'attrchange')
+                selectedBrowsers$: attributes$
                     .filter((ev) => (ev.attrName === 'selectedBrowsers'))
+                    .map((ev) => ev.attrValue)
             });
 
             this._intent.inject(this._view, this._attributes);
@@ -33,7 +33,7 @@ xtag.register('oca-settings-direct', {
     accessors: {
         selectedBrowsers: {
             set: function(value) {
-                this._privateEventBus.emit('attrchange', {
+                this.attributes$.onNext({
                     attrName: 'selectedBrowsers',
                     attrValue: value
                 });

@@ -1,4 +1,4 @@
 import settingsDirect from './settings-direct';
-import testComponent from './test-component';
+import multiCheckbox from './multi-checkbox';
 
-export { settingsDirect, testComponent };
+export { settingsDirect, multiCheckbox };

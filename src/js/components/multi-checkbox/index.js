@@ -1,7 +1,6 @@
 import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 import xtag from 'x-tag';
-import { EventEmitter } from 'events';
 
 import View from './view';
 import Intent from './intent';

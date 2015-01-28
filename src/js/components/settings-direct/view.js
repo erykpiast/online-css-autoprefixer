@@ -2,14 +2,12 @@ import Cycle from 'cyclejs';
 import { h } from 'cyclejs';
 import browserslist from 'browserslist';
 
-var firefoxEsr = browserslist('Firefox ESR').map((browser) => browser.split(' ')[1]);
+// var firefoxEsr = browserslist('Firefox ESR').map((browser) => browser.split(' ')[1]);
 
 
 var componentClass = 'autoprefixer__settings__direct';
 var browsersListClass = componentClass + '__browsers';
-var browserClass = componentClass + '__browser';
-var browserVersionsClass = browserClass + '__versions';
-var browserVersionClass = browserClass + '__version';
+var browserClass = componentClass + '__browser';;
 
 
 export default function createSettingsDirectView() {
@@ -26,6 +24,9 @@ export default function createSettingsDirectView() {
                                     className: browserClass
                                 }, h('fieldset', [
                                     h('legend', browsers[browserName].name),
+                                    h('multi-checkbox', {
+                                        value: JSON.stringify(browsers[browserName].versions)
+                                    })/*
                                     h('ul', {
                                             className: browserVersionsClass
                                         },
@@ -51,7 +52,7 @@ export default function createSettingsDirectView() {
                                                 )
                                             ])
                                         )
-                                    )
+                                    )*/
                                 ])
                             ))
                         )

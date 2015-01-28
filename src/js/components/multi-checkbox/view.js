@@ -14,7 +14,8 @@ export default function createMultiCheckboxView() {
                         type: 'checkbox',
                         checked: option.checked,
                         value: option.value,
-                        id: `multi-checkbox__${index}`
+                        id: `multi-checkbox__${index}`,
+                        onchange: 'change$',
                     })
                 ]))
             ))

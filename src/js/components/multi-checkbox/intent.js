@@ -6,7 +6,7 @@ export default function createMultiCheckboxIntent() {
             valueChange$: Cycle.Rx.Observable.merge(
                 multiCheckboxView.get('change$').map(ev => ev.target.value),
                 attributes.get('value$')
-                    .map((ev) => JSON.parse(ev.attrValue))
+                    .map((json) => JSON.parse(json))
             )
         };
     });

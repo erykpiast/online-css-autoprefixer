@@ -27,7 +27,7 @@ xtag.register('multi-checkbox', {
             Cycle.createRenderer(this).inject(this._view);
         },
         inserted: function() {
-            console.log('inserted');
+            
         }
     },
     accessors: {

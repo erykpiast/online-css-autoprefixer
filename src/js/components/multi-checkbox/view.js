@@ -7,16 +7,16 @@ export default function createMultiCheckboxView() {
         return {
             vtree$: multiCheckboxModel.get('value$').map((value) => h('ul', { },
                 value.map((option, index) => h('li', { }, [
-                    h('label', {
-                        htmlFor: `multi-checkbox__${index}`
-                    }, option.label),
                     h('input', {
                         type: 'checkbox',
                         checked: option.checked,
                         value: option.value,
                         id: `multi-checkbox__${index}`,
                         onchange: 'change$',
-                    })
+                    }),
+                    h('label', {
+                        htmlFor: `multi-checkbox__${index}`
+                    }, option.label)
                 ]))
             ))
         };

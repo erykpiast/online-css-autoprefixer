@@ -6,7 +6,7 @@ export default function createSettingsDirectIntent() {
             selectedBrowsersChange$: Cycle.Rx.Observable.merge(
                 settingsDirectView.get('selectedBrowsersChange$').map(ev => ev.target.value),
                 attributes.get('selectedBrowsers$')
-                    .map((ev) => JSON.parse(ev.attrValue))
+                    .map((json) => JSON.parse(json))
             )
         };
     });

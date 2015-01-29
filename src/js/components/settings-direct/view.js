@@ -2,12 +2,12 @@ import Cycle from 'cyclejs';
 import { h } from 'cyclejs';
 import browserslist from 'browserslist';
 
-// var firefoxEsr = browserslist('Firefox ESR').map((browser) => browser.split(' ')[1]);
+var firefoxEsr = browserslist('Firefox ESR').map((browser) => browser.split(' ')[1]);
 
 
 var componentClass = 'autoprefixer__settings__direct';
 var browsersListClass = componentClass + '__browsers';
-var browserClass = componentClass + '__browser';;
+var browserClass = componentClass + '__browser';
 
 
 export default function createSettingsDirectView() {
@@ -25,34 +25,21 @@ export default function createSettingsDirectView() {
                                 }, h('fieldset', [
                                     h('legend', browsers[browserName].name),
                                     h('multi-checkbox', {
-                                        value: JSON.stringify(browsers[browserName].versions)
-                                    })/*
-                                    h('ul', {
-                                            className: browserVersionsClass
-                                        },
-                                        browsers[browserName].versions
-                                            .reverse()
-                                            .map((browserVersion) => h('li', {
-                                                className: browserVersionClass
-                                            }, [
-                                                h('input', {
-                                                    id: browserName + '_' + browserVersion.name,
-                                                    type: 'checkbox',
-                                                    checked: browserVersion.selected,
-                                                    onchange: 'settingsChange$',
-                                                    'data-version': browserVersion.name
-                                                }),
-                                                h('label', {
-                                                    htmlFor: browserName + '_' + browserVersion.name
-                                                }, browserVersion.name +
-                                                    ((browserName === 'firefox') && (firefoxEsr.indexOf(browserVersion.name) !== -1) ?
-                                                        ' (ESR)' :
-                                                        ''
-                                                    )
-                                                )
-                                            ])
+                                        value: JSON.stringify(
+                                            browsers[browserName].versions
+                                                .reverse()
+                                                .map((version) => ({
+                                                    value: version.name,
+                                                    label: version.name + (
+                                                        (browserName === 'firefox')
+                                                            && (firefoxEsr.indexOf(version.name) !== -1) ?
+                                                            ' (ESR)' :
+                                                            ''
+                                                    ),
+                                                    checked: version.selected
+                                                }))
                                         )
-                                    )*/
+                                    })
                                 ])
                             ))
                         )

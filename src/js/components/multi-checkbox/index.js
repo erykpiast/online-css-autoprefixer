@@ -15,16 +15,29 @@ xtag.register('multi-checkbox', {
             this._model = Model();
             this._view = View();
             this._intent = Intent();
-            this._attributes = Cycle.createDataFlowSource({
+            this._inputAttributes = Cycle.createDataFlowSource({
                 value$: attributes$
                     .filter((ev) => (ev.attrName === 'value'))
                     .map((ev) => ev.attrValue)
+                    // to prevent loops when changing attr value from inside of the component
+                    // no keySelector needed, value is stringified JSON
+                    .distinctUntilChanged()
             });
+            this._outputAttributes = Cycle.createDataFlowSink(function(intent) {
+                return intent.get('valueChange$')
+                    .subscribe(function(value) {
+                        this.setAttribute('value', JSON.stringify(value));
 
-            this._intent.inject(this._view, this._attributes);
+                        this.dispatchEvent(new Event('change'));
+                    }.bind(this));
+            }.bind(this));
+
+            this._intent.inject(this._view, this._inputAttributes);
             this._view.inject(this._model);
             this._model.inject(this._intent);
             Cycle.createRenderer(this).inject(this._view);
+
+            this._outputAttributes.inject(this._intent);
         },
         inserted: function() {
             

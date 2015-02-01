@@ -30,7 +30,7 @@ export default function createSettingsDirectModel() {
         return {
             browsers$: Rx.Observable.combineLatest(
                     settingsDirectIntent.get('selectedBrowsersChange$'),
-                    Rx.Observable.just(availableBrowsers, Rx.Scheduler.timeout),
+                    Rx.Observable.just(availableBrowsers),
                     (selectedBrowsers, availableBrowsers) => _selectBrowsers(selectedBrowsers, availableBrowsers)
                 )
         };

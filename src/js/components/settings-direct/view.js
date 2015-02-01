@@ -25,6 +25,7 @@ export default function createSettingsDirectView() {
                                 }, h('fieldset', [
                                     h('legend', browsers[browserName].name),
                                     h('multi-checkbox', {
+                                        name: browserName,
                                         value: JSON.stringify(
                                             browsers[browserName].versions
                                                 .reverse()
@@ -38,7 +39,8 @@ export default function createSettingsDirectView() {
                                                     ),
                                                     checked: version.selected
                                                 }))
-                                        )
+                                        ),
+                                        onchange: 'selectedBrowsersChange$'
                                     })
                                 ])
                             ))

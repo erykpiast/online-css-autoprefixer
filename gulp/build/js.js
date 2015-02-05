@@ -7,6 +7,7 @@ var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var to5ify = require('6to5ify');
 var aliasify = require('aliasify');
+var brfs = require('brfs');
 
 var config = require('../config');
 
@@ -24,7 +25,8 @@ var bundler = browserify(config.src.js.main, {
             'x-tag': '../../shims/x-tag.js'
         },
         configDir: __dirname
-    }));
+    }))
+    .transform(brfs);
 
 function buildJsTask() {
     return bundler.bundle()

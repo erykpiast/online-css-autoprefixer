@@ -2,6 +2,7 @@ import each from 'lodash.foreach';
 import groupBy from 'lodash.groupby';
 import mapValues from 'map-values';
 import browserslist from 'browserslist';
+import compareVersions from 'version-compare.js';
 
 
 // @function parse - parse browserlist pattern to the list of browsers
@@ -21,7 +22,7 @@ export function parse (string) {
         ),
         (browserVersions) => browserVersions.map(
             (browserVersion) => browserVersion.version
-        )
+        ).sort(compareVersions)
     );
 }
 

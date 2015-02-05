@@ -8,9 +8,12 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
     return {
         settings$: Cycle.Rx.Observable.merge(
                 settingsIntent.get('settingsChange$')
-                    .map((settings) => settingsParser.stringify(settings)),
+                    .map((settings) =>
+                        settingsParser.stringify(settings)
+                    ),
                 rawConfigIntent.get('rawConfigChange$')
             )
+            .distinctUntilChanged()
             .map(function(rawConfig) {
                 var normalizedRawConfig = rawConfig.split(',').map((req) => req.trim()).join(',');
 

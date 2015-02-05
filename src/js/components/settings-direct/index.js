@@ -17,7 +17,7 @@ xtag.register('oca-settings-direct', {
             this._intent = Intent();
             this._inputAttributes = Cycle.createDataFlowSource({
                 selectedBrowsers$: attributes$
-                    .filter((ev) => (ev.attrName === 'selectedBrowsers'))
+                    .filter((ev) => (ev.attrName === 'value'))
                     .map((ev) => ev.attrValue)
                     // to prevent loops when changing attr value from inside of the component
                     // no keySelector needed, value is stringified JSON
@@ -26,10 +26,12 @@ xtag.register('oca-settings-direct', {
 
             this._outputAttributes = Cycle.createDataFlowSink(function(intent) {
                 return intent.get('selectedBrowsersChange$')
+                    .map((value) => JSON.stringify(value))
+                    .distinctUntilChanged()
                     .subscribe(function(value) {
-                        this.setAttribute('selected-browsers', JSON.stringify(value));
+                        this.setAttribute('value', value);
 
-                        this.dispatchEvent(new Event('selectedBrowsersChange'));
+                        this.dispatchEvent(new Event('change'));
                     }.bind(this));
             }.bind(this));
 
@@ -41,14 +43,14 @@ xtag.register('oca-settings-direct', {
             this._outputAttributes.inject(this._intent);
         },
         inserted: function() {
-            console.log('inserted');
+            
         }
     },
     accessors: {
-        selectedBrowsers: {
+        value: {
             set: function(value) {
                 this.attributes$.onNext({
-                    attrName: 'selectedBrowsers',
+                    attrName: 'value',
                     attrValue: value
                 });
 

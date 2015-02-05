@@ -6,10 +6,17 @@ import View from './view';
 import Intent from './intent';
 import Model from './model';
 
+var fs = require('fs');
+var stylesheet = fs.readFileSync(__dirname + '/styles.css', 'utf8');
+
 
 xtag.register('multi-checkbox', {
     lifecycle: {
         created: function() {
+            this.shadowRoot = this.createShadowRoot();
+            this.stylesheet = document.createElement('style');
+            this.stylesheet.innerHTML = stylesheet;
+
             var attributes$ = this.attributes$ = new Rx.Subject();
 
             this._model = Model();
@@ -35,9 +42,11 @@ xtag.register('multi-checkbox', {
             this._intent.inject(this._view, this._inputAttributes);
             this._view.inject(this._model);
             this._model.inject(this._intent);
-            Cycle.createRenderer(this).inject(this._view);
+            Cycle.createRenderer(this.shadowRoot).inject(this._view);
 
             this._outputAttributes.inject(this._intent);
+
+            this.shadowRoot.appendChild(this.stylesheet);
         },
         inserted: function() {
             

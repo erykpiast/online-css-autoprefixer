@@ -8,17 +8,9 @@ export default function createSettingsDirectIntent() {
             selectedBrowsersChange$: Cycle.Rx.Observable.combineLatest(
                 settingsDirectView.get('selectedBrowsersChange$')
                     .map(function(ev) {
-                        var parsedValue;
-                        try {
-                            // workaround for events bubbled from checkboxes inside multi-checkbox components
-                            parsedValue = JSON.parse(ev.target.value);
-                        } catch(err) {
-                            return;
-                        }
-
                         return {
                             name: ev.target.name,
-                            versions: parsedValue
+                            versions: JSON.parse(ev.target.value)
                                 .filter((version) => version.checked)
                                 .map((version) => version.value)
                         };

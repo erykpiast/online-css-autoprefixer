@@ -53,21 +53,21 @@
     "watchify": "~2.2"
   },
   "dependencies": {
-    "autoprefixer-core": "^5.0.0",
-    "browserslist": "^0.1.1",
-    "caniuse-db": "^1.0.30000048",
-    "cyclejs": "^0.11.1",
-    "lodash.assign": "^3.0.0",
-    "lodash.clonedeep": "^3.0.0",
-    "lodash.foreach": "^2.4.1",
-    "lodash.groupby": "^2.4.1",
-    "lodash.indexby": "^2.4.1",
-    "lodash.pick": "^2.4.1",
-    "lodash.sortby": "^2.4.1",
-    "lodash.uniq": "^2.4.1",
-    "map-values": "^1.0.1",
-    "rx": "^2.3.22",
-    "version-compare.js": "0.0.0",
-    "xhr": "^2.0.0"
+    "autoprefixer-core": "~5.1",
+    "browserslist": "~0.2",
+    "caniuse-db": "~1.0",
+    "cyclejs": "~0.12",
+    "lodash.assign": "~3.0",
+    "lodash.clonedeep": "~3.0",
+    "lodash.foreach": "~3.0",
+    "lodash.groupby": "~3.0",
+    "lodash.indexby": "~3.0",
+    "lodash.pick": "~3.0",
+    "lodash.sortby": "~3.0",
+    "lodash.uniq": "~3.0",
+    "map-values": "~1.0",
+    "rx": "~2.3",
+    "version-compare.js": "~0.0",
+    "xhr": "~2.0"
   }
 }

@@ -56,7 +56,7 @@
     "autoprefixer-core": "~5.1",
     "browserslist": "~0.2",
     "caniuse-db": "~1.0",
-    "cyclejs": "~0.12",
+    "cyclejs": "~0.11",
     "lodash.assign": "~3.0",
     "lodash.clonedeep": "~3.0",
     "lodash.foreach": "~3.0",

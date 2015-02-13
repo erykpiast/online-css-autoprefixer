@@ -47,7 +47,7 @@
     "karma-phantomjs-launcher": "~0.1",
     "lodash.foreach": "~3.0",
     "mocha": "~2.1",
-    "proxyquireify": "~1.1",
+    "proxyquireify": "~1.2",
     "run-sequence": "~1.0",
     "vinyl-source-stream": "~1.0",
     "watchify": "~2.3"

@@ -1,4 +1,4 @@
-function read(key) {
+export function read(key) {
     var value = localStorage.getItem(key);
 
     if(value === null || value === undefined) {
@@ -14,7 +14,7 @@ function read(key) {
     return value;
 }
 
-function save(key, value) {
+export function save(key, value) {
     if(value === null || value === undefined) {
         value = '';
     } else {

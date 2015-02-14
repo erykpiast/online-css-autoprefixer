@@ -62,7 +62,7 @@
     "lodash.foreach": "~3.0",
     "lodash.groupby": "~3.0",
     "lodash.indexby": "~3.0",
-    "lodash.pick": "~3.0",
+    "lodash.pick": "^3.0.0",
     "lodash.sortby": "~3.0",
     "lodash.uniq": "~3.0",
     "map-values": "~1.0",

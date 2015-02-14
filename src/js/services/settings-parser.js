@@ -16,7 +16,7 @@ export function parse (string) {
         groupBy(
             browserslist(string).map((browser) => ({
                 browser: browser.split(' ')[0],
-                version: browser.split(' ')[1]
+                version: browser.split(' ')[1].split('-').reverse()[0]
             })),
             'browser'
         ),

@@ -1,12 +1,14 @@
 import Cycle from 'cyclejs';
+import { Rx } from 'cyclejs';
 
 
-var RawConfigModel = Cycle.createModel(function (intent) {
+var RawConfigModel = Cycle.createModel(function (rawConfigIntent, settingsIntent) {
     return {
-        rawConfig$: intent.get('rawConfigChange$')
-            .map(function(rawConfig) {
-                return rawConfig;
-            })
+        rawConfig$: Rx.Observable.merge(
+            settingsIntent.get('settingsChange$'),
+            rawConfigIntent.get('rawConfigChange$')
+        )
+        .distinctUntilChanged()
     };
 });
 

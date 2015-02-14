@@ -1,6 +1,8 @@
 import Cycle from 'cyclejs';
 import assign from 'lodash.assign';
 
+import { stringify } from '../services/settings-parser';
+
 
 var SettingsIntent = Cycle.createIntent(function (settingsView) {
     return {
@@ -26,6 +28,7 @@ var SettingsIntent = Cycle.createIntent(function (settingsView) {
                 };
             })
             .scan((acc, value) => assign(acc, value))
+            .map(stringify)
     };
 });
 

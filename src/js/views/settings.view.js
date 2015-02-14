@@ -1,6 +1,6 @@
 import Cycle from 'cyclejs';
+import { h } from 'cyclejs';
 
-var h = Cycle.h;
 
 var SettingsView = Cycle.createView(function (model) {
     return {

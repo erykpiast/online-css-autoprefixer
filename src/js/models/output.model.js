@@ -6,16 +6,18 @@ var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
         prefixed$: Cycle.Rx.Observable.combineLatest(
                 inputModel.get('source$'),
                 settingsModel.get('settings$')
-                    .map((settings) => autoprefixer({
-                        // map browsers from { 'firefox': [ '37', '36' ], 'ie': [ '9' ] } to
-                        // [ 'firefox 37', 'firefox 36', 'ie 9' ]
-                        browsers: Object.keys(settings).map((browserName) =>
-                            settings[browserName].map((browserVersion) =>
-                                [ browserName, browserVersion ].join(' ')
-                            )
-                        ).reduce((prev, current) => prev.concat(current), []),
-                        cascade: true
-                    }))
+                    .map((settings) =>
+                        autoprefixer({
+                            // map browsers from { 'firefox': [ '37', '36' ], 'ie': [ '9' ] } to
+                            // [ 'firefox 37', 'firefox 36', 'ie 9' ]
+                            browsers: Object.keys(settings).map((browserName) =>
+                                settings[browserName].map((browserVersion) =>
+                                    [ browserName, browserVersion ].join(' ')
+                                )
+                            ).reduce((prev, current) => prev.concat(current), []),
+                            cascade: true
+                        })
+                    )
                     .filter(function(processor) {
                         try {
                             // check if settings are understandable by autoprefixer

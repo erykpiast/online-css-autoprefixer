@@ -434,3 +434,6 @@ describe('settingsParser.stringify test', function() {
     });
 
 });
+
+
+// TODO: add tests for parse method

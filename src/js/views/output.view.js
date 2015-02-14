@@ -1,6 +1,6 @@
 import Cycle from 'cyclejs';
+import { h } from 'cyclejs';
 
-var h = Cycle.h;
 
 var OutputView = Cycle.createView(function (model) {
     return {

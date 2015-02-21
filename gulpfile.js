@@ -36,7 +36,8 @@ gulp.task('_test', function(cb) {
     );
 });
 gulp.task('test', function() {
-    gulp.watch([ config.test.files, config.src.js.files ], [ '_test' ]);
+    // concatenating order matters, config.src.js.files has negative matching for test files
+    gulp.watch(config.src.js.files.concat(config.test.files), [ '_test' ]);
     gulp.start('_test');
 });
 

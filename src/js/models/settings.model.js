@@ -1,7 +1,7 @@
 import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 
-import { parse } from '../services/settings-parser';
+import { parse } from '../services/browserslist';
 import storage from '../services/storage';
 
 
@@ -26,7 +26,7 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
                     })
                     .filter((obj) => !!obj)
             )
-            .distinctUntilChanged()
+            .distinctUntilChanged(({ rawConfig }) => rawConfig)
             .tap(function({ rawConfig }) {
                 // save if parsing didn't raise an error
                 storage.save('settings', rawConfig);

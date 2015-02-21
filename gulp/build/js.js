@@ -5,7 +5,7 @@ var gutil = require('gulp-util');
 var connect = require('gulp-connect');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
-var to5ify = require('6to5ify');
+var babelify = require('babelify');
 var aliasify = require('aliasify');
 var brfs = require('brfs');
 
@@ -15,7 +15,7 @@ var bundler = browserify(config.src.js.main, {
         debug: true,
         entry: true
     })
-    .transform(to5ify.configure({
+    .transform(babelify.configure({
         only: /^(?!.*node_modules)+.+\.js$/,
         sourceMap: 'inline',
         sourceMapRelative: __dirname

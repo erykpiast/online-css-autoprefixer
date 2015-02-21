@@ -1,31 +1,7 @@
 import each from 'lodash.foreach';
-import groupBy from 'lodash.groupby';
-import mapValues from 'map-values';
 import browserslist from 'browserslist';
-import compareVersions from 'version-compare.js';
 
-
-// @function parse - convert browserlist pattern to the list of browsers
-// @access public
-// @param {string} string - browserlist pattern to parse
-// @return {object} parsed browserlist pattern
-//     @property {array} parsed[browser] - array of versions for browser
-//         @property {string} parsed[browser][version] - version of the browser that match the pattern
-export function parse (string) {
-    return mapValues(
-        groupBy(
-            browserslist(string).map((browser) => ({
-                browser: browser.split(' ')[0],
-                version: browser.split(' ')[1].split('-').reverse()[0]
-            })),
-            'browser'
-        ),
-        (browserVersions) => browserVersions.map(
-            (browserVersion) => browserVersion.version
-        ).sort(compareVersions)
-    );
-}
-
+export default { stringify, parse };
 
 /* @function stringify - convert settings object to browserlist pattern
  * @access public
@@ -50,13 +26,13 @@ export function parse (string) {
  * @return {string} browserlist pattern
  */
 export function stringify (settings) {
-    var autoprefixerConfig = [ ];
+    var browserslistPattern = [ ];
 
     each(settings, function(setting, settingName) {
         switch(setting ? settingName : null) {
             case 'popularity':
                 each(setting, function(popularity, country) {
-                    autoprefixerConfig.push([
+                    browserslistPattern.push([
                         '>',
                         popularity + '%',
                         (country !== 'global' ? 'in ' + country : undefined)
@@ -65,7 +41,7 @@ export function stringify (settings) {
             break;
             case 'lastVersions':
                 each(setting, function(versions, browser) {
-                    autoprefixerConfig.push([
+                    browserslistPattern.push([
                         'last',
                         versions,
                         (browser !== 'all' ? browser : undefined),
@@ -76,7 +52,7 @@ export function stringify (settings) {
             case 'versionComparison':
                 each(setting, function(comparisons, browser) {
                     each(comparisons, function(comparison, comparisonName) {
-                        autoprefixerConfig.push([
+                        browserslistPattern.push([
                             browser,
                             ({
                                 olderThan: comparison.equal ? '<=' : '<',
@@ -88,19 +64,23 @@ export function stringify (settings) {
                 });
             break;
             case 'direct':
-                autoprefixerConfig = autoprefixerConfig.concat(setting);
+                each(setting, function(versions, browser) {
+                    versions.forEach(function(version) {
+                        browserslistPattern.push(`${browser} ${version}`);
+                    });
+                });
             break;
             default:
         }
     });
 
-    return autoprefixerConfig.join(',');
+    return browserslistPattern.join(',');
 }
 
 
-/* @function destringify - convert Autoprefixer configuration string to settings object
+/* @function parse - convert Autoprefixer configuration string to settings object
  * @access public
- * @param {string} autoprefixerConfig - browserlist pattern
+ * @param {string} browserslistPattern - browserlist pattern
  * @returns {object} settings - settings object
  *     @property {object} [settings.popularity = undefined] - popularity matcher
  *         @property {number} settings.popularity[country | 'global'] - popularity for country or entire world
@@ -119,14 +99,14 @@ export function stringify (settings) {
  *     @property {array} [settings.direct = undefined] - direct matcher
  *         @property {number} settings.direct[browser] - browser chosen by direct matcher (includes ESR matcher)
  */
-export function destringify (autoprefixerConfig) {
+export function parse (browserslistPattern) {
     var settings = { };
     
-    autoprefixerConfig
+    browserslistPattern
         .split(',')
         .map((part) => part.trim())
         .forEach(function(part) {
-            each(browserlist.queries, function(query, queryName) {
+            each(browserslist.queries, function(query, queryName) {
                 var match = part.match(query.regexp);
                 
                 if(!match) {
@@ -136,57 +116,81 @@ export function destringify (autoprefixerConfig) {
                 match = match.slice(1);
                 
                 switch(queryName) {
-                    case 'globalStatistics':
-                    case 'countryStatistics':
+                    case 'globalStatistics': 
+                    case 'countryStatistics': {
+                        let [ popularity, country ] = match;
+
+                        country = country || 'global';
+
                         if(!settings.hasOwnProperty('popularity')) {
                             settings.popularity = { };
                         }
-                    case 'globalStatistics':
-                        settings.popularity.global = match[0];
-                    break;
-                    case 'countryStatistics':
-                        settings.popularity[match[1]] = match[0];
-                    break;
+
+                        settings.popularity[country] = parseFloat(popularity, 10);    
+                    } break;
                     case 'lastVersions':
-                    case 'lastByBrowser':
+                    case 'lastByBrowser': {
+                        let [ lastVersions, browser ] = match;
+
+                        browser = (browser ?
+                            browserslist.byName(browser).name :
+                            'all'
+                        );
+
                         if(!settings.hasOwnProperty('lastVersions')) {
                             settings.lastVersions = { };
                         }
-                    case 'lastVersions':
-                        settings.lastVersions.all = match[0];
-                    break;
-                    case 'lastByBrowser':
-                        settings.lastVersions[match[1]] = match[0];
-                    break;
-                    case 'versions':
+
+                        settings.lastVersions[browser] = parseInt(lastVersions, 10);
+                    } break;
+                    case 'versions': {
+                        let [ browser, sign, version ] = match;
+
+                        let key;
+                        if(sign[0] === '<') {
+                            key = 'olderThan';
+                        } else if(sign[0] === '>') {
+                            key = 'newerThan';
+                        }
+
+                        if(!key) {
+                            return;
+                        }
+
                         if(!settings.hasOwnProperty('versionComparison')) {
                             settings.versionComparison = { };
                         }
+
+                        browser = browserslist.byName(browser).name;
                         
-                        if(!settings.versionComparison.hasOwnProperty(match[0])) {
-                            settings.versionComparison[match[0]] = { };
+                        if(!settings.versionComparison.hasOwnProperty(browser)) {
+                            settings.versionComparison[browser] = { };
                         }
-                        
-                        let browser = settings.versionComparison[match[0]];
-                        
-                        if(match[1] === '<') {
-                            browser.olderThan = {
-                                version: match[2],
-                                equal: match[1].indexOf('=') !== -1
-                            };
-                        } else if(match[1] === '>') {
-                            browser.newerThan = {
-                                version: match[2],
-                                equal: match[1].indexOf('=') !== -1
-                            };
-                        }
-                    break;
+
+                        settings.versionComparison[browser][key] = {
+                            version: version,
+                            equal: sign.indexOf('=') !== -1
+                        };
+                    } break;
                     case 'esr':
-                        
-                    break;
-                    case 'direct':
-                        
-                    break;
+                    case 'direct': {
+                        let [ browser, version ] = (queryName === 'esr' ?
+                            // hardcoded version, uuuu
+                            // TODO: make pull request to browserslist repository and expose this value
+                            'firefox esr'.split(' ') :
+                            query.select.apply(browserslist, match)[0].split(' ')
+                        );
+
+                        if(!settings.hasOwnProperty('direct')) {
+                            settings.direct = { };
+                        }
+
+                        if(!settings.direct.hasOwnProperty(browser)) {
+                            settings.direct[browser] = [ ];
+                        }
+
+                        settings.direct[browser].push(version);
+                    } break;
                 }
             });
         });

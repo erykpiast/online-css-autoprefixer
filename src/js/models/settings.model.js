@@ -15,11 +15,10 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
                     })),
                 rawConfigIntent.get('rawConfigChange$')
                     .map(function(rawConfig) {
-                        var normalizedRawConfig = rawConfig.split(',').map((req) => req.trim()).join(',');
-
+                        // raw config could be not parsable sometime
                         try {
                             return {
-                                browsers: parse(normalizedRawConfig),
+                                browsers: parse(rawConfig),
                                 rawConfig: rawConfig
                             };
                         } catch(err) { }
@@ -28,7 +27,7 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
             )
             .distinctUntilChanged(({ rawConfig }) => rawConfig)
             .tap(function({ rawConfig }) {
-                // save if parsing didn't raise an error
+                // save if parsing didn't raise an error and config is different than before
                 storage.save('settings', rawConfig);
             })
             .map(({ browsers }) => browsers)

@@ -17,7 +17,14 @@ export default { parse };
 export function parse (string) {
     return mapValues(
         groupBy(
-            browserslist(string).map((browser) => ({
+            browserslist(
+                // erase whitespace between comas, browserslist doesn't like them
+                string
+                    .split(',')
+                    .map((req) => req.trim())
+                    .join(',')
+            )
+            .map((browser) => ({
                 browser: browser.split(' ')[0],
                 version: browser.split(' ')[1].split('-').reverse()[0]
             })),

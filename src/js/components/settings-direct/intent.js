@@ -26,8 +26,8 @@ function chain(obj) {
 export default function createSettingsDirectIntent() {
     var SettingsDirectIntent = Cycle.createIntent(function (settingsDirectView, attributes) {
         return {
-            selectedBrowsersChange$: Cycle.Rx.Observable.combineLatest(
-                settingsDirectView.get('selectedBrowsersChange$')
+            valueChange$: Cycle.Rx.Observable.combineLatest(
+                settingsDirectView.get('valueChange$')
                     .map(function(ev) {
                         return {
                             name: ev.target.name,

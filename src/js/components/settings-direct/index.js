@@ -25,7 +25,7 @@ xtag.register('oca-settings-direct', {
             });
 
             this._outputAttributes = Cycle.createDataFlowSink(function(intent) {
-                return intent.get('selectedBrowsersChange$')
+                return intent.get('valueChange$')
                     .map((value) => JSON.stringify(value))
                     .distinctUntilChanged()
                     .subscribe(function(value) {

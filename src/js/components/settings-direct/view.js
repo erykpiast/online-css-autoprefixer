@@ -13,7 +13,7 @@ var browserClass = componentClass + '__browser';
 export default function createSettingsDirectView() {
     var SettingsDirectView = Cycle.createView(function (settingsDirectModel) {
         return {
-            vtree$: settingsDirectModel.get('browsers$').map((browsers) => h('form', {
+            vtree$: settingsDirectModel.get('value$').map((browsers) => h('form', {
                         className: componentClass
                     }, h('fieldset', [
                         h('legend', {}, 'Direct'),
@@ -40,7 +40,7 @@ export default function createSettingsDirectView() {
                                                     checked: version.selected
                                                 }))
                                         ),
-                                        onchange: 'selectedBrowsersChange$'
+                                        onchange: 'valueChange$'
                                     })
                                 ])
                             ))

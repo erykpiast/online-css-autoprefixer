@@ -17,8 +17,9 @@ function _selectBrowsers(selectedBrowsers, availableBrowsers) {
             name: browser.name,
             versions: browser.versions.map((version) => ({
                 name: version,
-                selected: selectedBrowsers.hasOwnProperty(browserKey) &&
-                    (selectedBrowsers[browserKey].indexOf(version) !== -1)
+                selected: (selectedBrowsers.hasOwnProperty(browserKey) &&
+                    (selectedBrowsers[browserKey].indexOf(version) !== -1)) ||
+                    ((browserKey === 'firefox') && (version === '31') && (selectedBrowsers[browserKey].indexOf('esr') !== -1))
             }))
         };
     });
@@ -28,8 +29,8 @@ function _selectBrowsers(selectedBrowsers, availableBrowsers) {
 export default function createSettingsDirectModel() {
     var SettingsDirectModel = Cycle.createModel(function (settingsDirectIntent) {
         return {
-            browsers$: Rx.Observable.combineLatest(
-                    settingsDirectIntent.get('selectedBrowsersChange$'),
+            value$: Rx.Observable.combineLatest(
+                    settingsDirectIntent.get('valueChange$'),
                     Rx.Observable.just(availableBrowsers),
                     (selectedBrowsers, availableBrowsers) => _selectBrowsers(selectedBrowsers, availableBrowsers)
                 )

@@ -13,7 +13,7 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
             settingsIntent.get('settingsChange$'),
             rawConfigIntent.get('rawConfigChange$')
                 .map(function(rawConfig) {
-                    // raw config could be not parsable sometime
+                    // raw config can be not parsable, it's user input
                     try {
                         return parse(rawConfig);
                     } catch(err) { }
@@ -33,7 +33,7 @@ var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent)
         }))
         .distinctUntilChanged(({ rawConfig }) => rawConfig)
         .tap(function({ rawConfig }) {
-            // save if parsing didn't raise an error and config is different than before
+            // save if parsing didn't raise an error and config is different than was before
             storage.save('settings', rawConfig);
         })
         .map(({ settings, rawConfig }) => ({

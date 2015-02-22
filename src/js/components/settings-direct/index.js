@@ -28,11 +28,11 @@ xtag.register('oca-settings-direct', {
                 return intent.get('valueChange$')
                     .map((value) => JSON.stringify(value))
                     .distinctUntilChanged()
-                    .subscribe(function(value) {
+                    .subscribe((value) => {
                         this.setAttribute('value', value);
 
                         this.dispatchEvent(new Event('change'));
-                    }.bind(this));
+                    });
             }.bind(this));
 
             this._intent.inject(this._view, this._inputAttributes);

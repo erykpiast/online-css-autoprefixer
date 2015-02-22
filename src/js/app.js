@@ -32,6 +32,6 @@ SettingsView.inject(SettingsModel);
 SettingsIntent.inject(SettingsView);
 
 Cycle.createRenderer('.autoprefixer__view-container--raw-config').inject(RawConfigView);
-RawConfigModel.inject(RawConfigIntent, SettingsIntent);
+RawConfigModel.inject(RawConfigIntent, SettingsModel);
 RawConfigView.inject(RawConfigModel);
 RawConfigIntent.inject(RawConfigView);

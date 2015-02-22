@@ -9,11 +9,11 @@ module.exports = function (config) {
         reporters: [ 'mocha' ],
         colors: true,
         logLevel: config.LOG_INFO,
-        
+
         port: 9876,
         autoWatch: false,
 
-        browsers: [ 'Chrome' ],
+        browsers: [ 'PhantomJS' ],
         singleRun: true
     });
 };

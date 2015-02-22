@@ -10,33 +10,22 @@ import storage from '../services/storage';
 var SettingsModel = Cycle.createModel(function (settingsIntent, rawConfigIntent) {
     return {
         settings$: Rx.Observable.merge(
-            settingsIntent.get('settingsChange$')
-                .map((settings) => ({
-                    settings: settings,
-                    rawConfig: stringify(settings)
-                })),
+            settingsIntent.get('settingsChange$'),
             rawConfigIntent.get('rawConfigChange$')
                 .map(function(rawConfig) {
                     // raw config could be not parsable sometime
                     try {
-                        return {
-                            settings: parse(rawConfig),
-                            rawConfig: rawConfig
-                        };
+                        return parse(rawConfig);
                     } catch(err) { }
                 })
                 .filter((obj) => !!obj)
         )
-        .scan({
-            settings: { },
-            rawConfig: ''
-        }, ({ settings }, { settings: newSettings, rawConfig }) => ({
-            settings: assign(settings, newSettings),
-            rawConfig: rawConfig
-        }))
-        .map(({ settings, rawConfig }) => ({
+        .scan({ }, (settings, newSettings) => 
+           assign(settings, newSettings)
+        )
+        .map((settings) => ({
             settings: settings,
-            rawConfig: rawConfig // remove whitespace between and sort
+            rawConfig: stringify(settings) // remove whitespace between and sort
                 .split(',')
                 .map((req) => req.trim())
                 .sort()

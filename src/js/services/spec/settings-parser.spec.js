@@ -763,6 +763,26 @@ describe('settingsParser.parse test', function() {
             });
 
         });
+        
+        
+        describe('versions range', function() {
+
+            beforeEach(function() {
+                string = 'Opera 10.1';
+
+                settings = settingsParser.parse(string);
+            });
+
+
+            it('Should return single version if specified version is part of a range', function() {
+                assert.deepEqual(settings, {
+                    direct: {
+                        'opera': [ '10.1' ]
+                    }
+                });
+            });
+
+        });
 
 
         describe('multiple', function() {

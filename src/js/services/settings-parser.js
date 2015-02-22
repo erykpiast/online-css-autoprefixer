@@ -180,6 +180,9 @@ export function parse (browserslistPattern) {
                             'firefox esr'.split(' ') :
                             query.select.apply(browserslist, match)[0].split(' ')
                         );
+                        
+                        // take last part from versions range
+                        version = version.split('-').reverse()[0];
 
                         if(!settings.hasOwnProperty('direct')) {
                             settings.direct = { };

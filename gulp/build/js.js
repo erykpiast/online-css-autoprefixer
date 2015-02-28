@@ -15,6 +15,7 @@ var bundler = browserify(config.src.js.main, {
         debug: true,
         entry: true
     })
+    .transform(brfs)
     .transform(babelify.configure({
         only: /^(?!.*node_modules)+.+\.js$/,
         sourceMap: 'inline',
@@ -25,8 +26,7 @@ var bundler = browserify(config.src.js.main, {
             'x-tag': '../../shims/x-tag.js'
         },
         configDir: __dirname
-    }))
-    .transform(brfs);
+    }));
 
 function buildJsTask() {
     return bundler.bundle()

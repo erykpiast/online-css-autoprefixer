@@ -1,4 +1,5 @@
 import Cycle from 'cyclejs';
+import { Rx } from 'cyclejs';
 import mapValues from 'map-values';
 import assign from 'lodash.assign';
 import pick from 'lodash.pick';
@@ -26,7 +27,7 @@ function chain(obj) {
 export default function createsettingsPopularityIntent() {
     var settingsPopularityIntent = Cycle.createIntent(function (settingsPopularityView, attributes) {
         return {
-            valueChange$: Cycle.Rx.Observable.combineLatest(
+            valueChange$: Rx.Observable.combineLatest(
                 settingsPopularityView.get('valueChange$')
                     .map(function(ev) {
                         return {

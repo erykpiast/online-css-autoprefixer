@@ -1,38 +1,30 @@
 import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
-import mapValues from 'map-values';
-import caniuse from 'caniuse-db/data';
+import { i18n as getCountryNames } from 'i18n-iso-countries/en';
 
-var availableBrowsers = mapValues(caniuse.agents, function(browser) {
-    return {
-        name: browser.browser,
-        versions: browser.versions.filter((version) => !!version).map((version) => version.split('-').reverse()[0])
-    };
-});
+var fs = require('fs');
 
-
-function _selectBrowsers(selectedBrowsers, availableBrowsers) {
-    return mapValues(availableBrowsers, function(browser, browserKey) {
-        return {
-            name: browser.name,
-            versions: browser.versions.map((version) => ({
-                name: version,
-                selected: (selectedBrowsers.hasOwnProperty(browserKey) &&
-                    (selectedBrowsers[browserKey].indexOf(version) !== -1)) ||
-                    ((browserKey === 'firefox') && (version === '31') && (selectedBrowsers[browserKey].indexOf('esr') !== -1))
-            }))
-        };
-    });
-}
+var countryNames = getCountryNames();
+var availableCountries = fs.readdirSync(__dirname + '/../../../../node_modules/caniuse-db/region-usage-json')
+    .map((countryFile) =>
+        countryFile.split('.')[0]
+    )
+    .map((countryCode) => ({
+        code: countryCode,
+        name: countryNames[countryCode]
+    }))
+    .filter((country) =>
+        ('undefined' !== typeof country.name)
+    );
 
 
-export default function createsettingsPopularityModel() {
+export default function createSettingsPopularityModel() {
     var settingsPopularityModel = Cycle.createModel(function (settingsPopularityIntent) {
         return {
             value$: Rx.Observable.combineLatest(
                     settingsPopularityIntent.get('valueChange$'),
-                    Rx.Observable.just(availableBrowsers),
-                    (selectedBrowsers, availableBrowsers) => _selectBrowsers(selectedBrowsers, availableBrowsers)
+                    Rx.Observable.just(availableCountries),
+                    (selectedCountries, availableCountries) => ({ availableCountries, selectedCountries })
                 )
         };
     });

@@ -14,9 +14,14 @@ var SettingsView = Cycle.createView(function (model) {
                     ': ',
                     h('span', {}, browsers[browserName].join(', '))
                 ]))),
-                h('oca-settings-direct', {
-                    name: 'direct',
-                    value: JSON.stringify(settings.direct),
+                // h('oca-settings-direct', {
+                //     name: 'direct',
+                //     value: JSON.stringify(settings.direct),
+                //     onchange: 'settingsChange$'
+                // }, []),
+                h('oca-settings-popularity', {
+                    name: 'popularity',
+                    value: JSON.stringify(settings.popularity),
                     onchange: 'settingsChange$'
                 }, [])
             ])

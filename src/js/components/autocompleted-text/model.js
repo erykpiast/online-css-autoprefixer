@@ -1,0 +1,34 @@
+import Cycle from 'cyclejs';
+import { Rx } from 'cyclejs';
+
+export default function createAutocompletedTextModel() {
+    var autocompletedTextModel = Cycle.createModel(function (autocompletedTextIntent, inputAttributes) {
+        return {
+            value$: autocompletedTextIntent.get('valueChange$'),
+            autocompletions$: Rx.Observable.combineLatest(
+                autocompletedTextIntent.get('valueChange$'),
+                inputAttributes.get('datalist$'),
+                (value, datalist) =>
+                    datalist
+                        .map((keywords) => ({
+                            value: keywords[0],
+                            score: Math.max.apply(Math, keywords.map(function(keyword, index) {
+                                var index = keyword.indexOf(value);
+
+                                if(index === -1) {
+                                    return -Infinity;
+                                }
+
+                                return (10 - index * Math.abs(keyword.length - value.length));
+                            }))
+                        }))
+                        .filter(({ score }) => (score >= 0))
+                        .sort((a, b) => b.score - a.score)
+                        .map(({ value }) => value)
+            )
+        };
+    });
+
+    return autocompletedTextModel;
+}
+

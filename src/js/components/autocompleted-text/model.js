@@ -23,27 +23,38 @@ export default function createAutocompletedTextModel() {
                     .filter(({ score }) => (score >= 0))
                     .sort((a, b) => b.score - a.score)
                     .map(({ value }) => value)
-        ).tap(console.log.bind(console, 'autocompletions'));
+        );
+        var selected$ = Rx.Observable.combineLatest(
+            autocompletedTextIntent.get('selectedInput$'),
+            autocompletions$,
+            (selectedInput, autocompletions) => ({ selectedInput, autocompletions })
+        ).scan(0, (position, { selectedInput, autocompletions }) => {
+            position = position + selectedInput;
+
+            if(position < 0) {
+                position = 0;
+            } else if(position > (autocompletions.length - 1)) {
+                position = autocompletions.length - 1;
+            }
+
+            return position;
+        });
 
         return {
-            value$: autocompletedTextIntent.get('valueChange$'),
+            value$: Rx.Observable.merge(
+                autocompletedTextIntent.get('valueChange$'),
+                autocompletedTextIntent.get('selectedChange$')
+                    .tap(console.log.bind(console, 'selected change'))
+                    .withLatestFrom(
+                        selected$,
+                        (( enter, position ) => position)
+                    ).withLatestFrom(
+                        autocompletions$,
+                        ((position, autocompletions) => autocompletions[position])
+                    ).tap(console.log.bind(console, 'value from autocompletions'))
+            ),
             autocompletions$: autocompletions$,
-            selected$: Rx.Observable.combineLatest(
-                autocompletedTextIntent.get('selectedChange$'),
-                autocompletions$,
-                (selectedChange, autocompletions) => ({ selectedChange, autocompletions })
-            ).scan(0, (position, { selectedChange, autocompletions }) => {
-                position = position + selectedChange;
-                
-                if(position < 0) {
-                    position = 0;
-                } else if(position > (autocompletions.length - 1)) {
-                    position = autocompletions.length - 1;
-                }
-                
-                return position;
-            })
-            .tap(console.log.bind(console, 'position'))
+            selected$: selected$
         };
     });
 

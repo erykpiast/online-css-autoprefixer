@@ -8,18 +8,21 @@ export default function createAutocompletedTextView() {
         return {
             vtree$: Rx.Observable.combineLatest(
                 autocompletedTextModel.get('value$'),
-                autocompletedTextModel.get('autocompletions$')
-                    .tap(console.log.bind(console, 'autocompletions$')),
-                (value, autocompletions) => ({ value, autocompletions })
+                autocompletedTextModel.get('autocompletions$'),
+                autocompletedTextModel.get('selected$'),
+                (value, autocompletions, selected) => ({ value, autocompletions, selected })
             )
-            .map(({ value, autocompletions }) =>
+            .map(({ value, autocompletions, selected }) =>
                 h('div', [
                     h('input', {
                         type: 'text',
                         value: value,
-                        oninput: 'change$'
+                        oninput: 'change$',
+                        onkeydown: 'select$'
                     }),
-                    h('ul', autocompletions.map((keyword) => h('li', keyword)))
+                    h('ul', autocompletions.map((keyword, index) => h('li', {
+                        className: selected === index ? 'is-selected' : ''
+                    }, keyword)))
                 ])
             )
         };

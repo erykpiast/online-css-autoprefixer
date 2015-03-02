@@ -1,7 +1,11 @@
 ul {
+  display: none;
   list-style-type: none;
   padding: 0;
-  
+}
+
+ul.is-visible {
+  display: block;
 }
   
 li.is-selected {

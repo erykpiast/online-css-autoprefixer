@@ -11,6 +11,7 @@ export default function createAutocompletedTextIntent() {
         var up$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode === UP));
         var down$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode === DOWN));
         var enter$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode === ENTER));
+        var notEnter$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode !== ENTER));
 
         return {
             valueChange$: Rx.Observable.merge(
@@ -22,7 +23,15 @@ export default function createAutocompletedTextIntent() {
                 up$.map(() => -1),
                 down$.map(() => 1)
             ).startWith(0),
-            selectedChange$: enter$
+            selectedChange$: enter$,
+            showAutocompletions$: Rx.Observable.merge(
+                notEnter$,
+                autocompletedTextView.get('focus$')
+            ),
+            hideAutocompletions$: Rx.Observable.merge(
+                enter$,
+                autocompletedTextView.get('blur$')
+            )
         };
     });
 

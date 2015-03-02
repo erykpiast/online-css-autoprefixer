@@ -39,23 +39,25 @@ export default function createAutocompletedTextModel() {
 
             return position;
         });
+        var value$ = Rx.Observable.merge(
+            autocompletedTextIntent.get('valueChange$'),
+            autocompletedTextIntent.get('selectedChange$')
+                .withLatestFrom(
+                    selected$,
+                    (( enter, position ) => position)
+                ).withLatestFrom(
+                    autocompletions$,
+                    ((position, autocompletions) => autocompletions[position])
+                )
+        );
+        var autocompletionsVisible$ = Rx.Observable.merge(
+            autocompletedTextIntent.get('showAutocompletions$')
+                .map(() => true),
+            autocompletedTextIntent.get('hideAutocompletions$')
+                .map(() => false)
+        ).startWith(false);
 
-        return {
-            value$: Rx.Observable.merge(
-                autocompletedTextIntent.get('valueChange$'),
-                autocompletedTextIntent.get('selectedChange$')
-                    .tap(console.log.bind(console, 'selected change'))
-                    .withLatestFrom(
-                        selected$,
-                        (( enter, position ) => position)
-                    ).withLatestFrom(
-                        autocompletions$,
-                        ((position, autocompletions) => autocompletions[position])
-                    ).tap(console.log.bind(console, 'value from autocompletions'))
-            ),
-            autocompletions$: autocompletions$,
-            selected$: selected$
-        };
+        return { value$, autocompletions$, selected$, autocompletionsVisible$ };
     });
 
     return autocompletedTextModel;

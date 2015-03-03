@@ -24,8 +24,8 @@ export default function createAutocompletedTextModel() {
                     .sort((a, b) => b.score - a.score)
                     .map(({ value }) => value)
         );
-        var selected$ = Rx.Observable.combineLatest(
-            autocompletedTextIntent.get('selectedInput$'),
+        var selectedAutocompletion$ = Rx.Observable.combineLatest(
+            autocompletedTextIntent.get('selectedAutocompletionInput$'),
             autocompletions$,
             (selectedInput, autocompletions) => ({ selectedInput, autocompletions })
         ).scan(0, (position, { selectedInput, autocompletions }) => {
@@ -39,11 +39,11 @@ export default function createAutocompletedTextModel() {
 
             return position;
         });
-        var value$ = Rx.Observable.merge(
+        var textFieldValue$ = Rx.Observable.merge(
             autocompletedTextIntent.get('valueChange$'),
-            autocompletedTextIntent.get('selectedChange$')
+            autocompletedTextIntent.get('selectedAutocompletionChange$')
                 .withLatestFrom(
-                    selected$,
+                    selectedAutocompletion$,
                     (( enter, position ) => position)
                 ).withLatestFrom(
                     autocompletions$,
@@ -56,8 +56,13 @@ export default function createAutocompletedTextModel() {
             autocompletedTextIntent.get('hideAutocompletions$')
                 .map(() => false)
         ).startWith(false);
+        var value$ = autocompletedTextIntent.get('selectedAutocompletionChange$')
+            .withLatestFrom(
+                textFieldValue$,
+                (selected, value) => value
+            );
 
-        return { value$, autocompletions$, selected$, autocompletionsVisible$ };
+        return { value$, textFieldValue$, autocompletions$, selectedAutocompletion$, autocompletionsVisible$ };
     });
 
     return autocompletedTextModel;

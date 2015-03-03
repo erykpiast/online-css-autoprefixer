@@ -30,8 +30,8 @@ xtag.register('multi-checkbox', {
                     // no keySelector needed, value is stringified JSON
                     .distinctUntilChanged()
             });
-            this._outputAttributes = Cycle.createDataFlowSink(function(intent) {
-                return intent.get('valueChange$')
+            this._outputAttributes = Cycle.createDataFlowSink(function(model) {
+                return model.get('value$')
                     .subscribe(function(value) {
                         this.setAttribute('value', JSON.stringify(value));
 
@@ -44,7 +44,7 @@ xtag.register('multi-checkbox', {
             this._model.inject(this._intent);
             Cycle.createRenderer(this.shadowRoot).inject(this._view);
 
-            this._outputAttributes.inject(this._intent);
+            this._outputAttributes.inject(this._model);
 
             this.shadowRoot.appendChild(this.stylesheet);
         },

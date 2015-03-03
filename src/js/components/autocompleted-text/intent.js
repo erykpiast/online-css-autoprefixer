@@ -19,11 +19,11 @@ export default function createAutocompletedTextIntent() {
                     .map(({ target }) => target.value),
                 inputAttributes.get('value$')
             ),
-            selectedInput$: Rx.Observable.merge(
+            selectedAutocompletionInput$: Rx.Observable.merge(
                 up$.map(() => -1),
                 down$.map(() => 1)
             ).startWith(0),
-            selectedChange$: enter$,
+            selectedAutocompletionChange$: enter$,
             showAutocompletions$: Rx.Observable.merge(
                 notEnter$,
                 autocompletedTextView.get('focus$')

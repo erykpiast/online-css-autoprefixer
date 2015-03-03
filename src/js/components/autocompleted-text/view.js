@@ -7,13 +7,13 @@ export default function createAutocompletedTextView() {
     var autocompletedTextView = Cycle.createView(function (autocompletedTextModel) {
         return {
             vtree$: Rx.Observable.combineLatest(
-                autocompletedTextModel.get('value$'),
+                autocompletedTextModel.get('textFieldValue$'),
                 autocompletedTextModel.get('autocompletions$'),
-                autocompletedTextModel.get('selected$'),
                 autocompletedTextModel.get('autocompletionsVisible$'),
-                (value, autocompletions, selected, autocompletionsVisible) => ({ value, autocompletions, selected, autocompletionsVisible })
+                autocompletedTextModel.get('selectedAutocompletion$'),
+                (value, autocompletions, autocompletionsVisible, selectedAutocompletion) => ({ value, autocompletions, autocompletionsVisible, selectedAutocompletion })
             )
-            .map(({ value, autocompletions, selected, autocompletionsVisible }) =>
+            .map(({ value, autocompletions, autocompletionsVisible, selectedAutocompletion }) =>
                 h('div', [
                     h('input', {
                         type: 'text',
@@ -26,7 +26,7 @@ export default function createAutocompletedTextView() {
                     h('ul', {
                         className: autocompletionsVisible ? 'is-visible' : ''
                     }, autocompletions.map((keyword, index) => h('li', {
-                        className: selected === index ? 'is-selected' : ''
+                        className: selectedAutocompletion === index ? 'is-selected' : ''
                     }, keyword)))
                 ])
             )

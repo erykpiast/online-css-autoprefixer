@@ -11,3 +11,11 @@ ul.is-visible {
 li.is-selected {
   background-color: #AAA;
 }
+
+input[type=text].is-invalid {
+  border-color: red;
+  border-style: solid;
+  outline-color: red;
+  
+  transition: border-color .2s ease-out, outline-color .2s ease-out;
+}

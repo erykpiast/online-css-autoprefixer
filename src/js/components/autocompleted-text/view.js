@@ -11,13 +11,15 @@ export default function createAutocompletedTextView() {
                 autocompletedTextModel.get('autocompletions$'),
                 autocompletedTextModel.get('autocompletionsVisible$'),
                 autocompletedTextModel.get('selectedAutocompletion$'),
-                (value, autocompletions, autocompletionsVisible, selectedAutocompletion) => ({ value, autocompletions, autocompletionsVisible, selectedAutocompletion })
+                autocompletedTextModel.get('invalidValue$'),
+                (value, autocompletions, autocompletionsVisible, selectedAutocompletion, invalidValue) => ({ value, autocompletions, autocompletionsVisible, selectedAutocompletion, invalidValue })
             )
-            .map(({ value, autocompletions, autocompletionsVisible, selectedAutocompletion }) =>
+            .map(({ value, autocompletions, autocompletionsVisible, selectedAutocompletion, invalidValue }) =>
                 h('div', [
                     h('input', {
                         type: 'text',
                         value: value,
+                        className: invalidValue ? 'is-invalid' : '',
                         oninput: 'change$',
                         onkeydown: 'select$',
                         onfocus: 'focus$',

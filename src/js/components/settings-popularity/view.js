@@ -10,7 +10,7 @@ export default function createsettingsPopularityView() {
     var settingsPopularityView = Cycle.createView(function (settingsPopularityModel) {
         return {
             vtree$: settingsPopularityModel.get('value$')
-                .map(({ availableCountries/*, selectedCountries*/ }) => h('form', {
+                .map(({ availableCountries, selectedCountries }) => h('form', {
                         className: componentClass
                     }, h('fieldset', [
                         h('legend', 'Popularity'),
@@ -19,8 +19,10 @@ export default function createsettingsPopularityView() {
                             datalist: JSON.stringify(
                                 availableCountries
                                     .map((country) => [ country.name,  country.code ])
-                            )
-                        })
+                            ),
+                            onchange: 'change$'
+                        }),
+                        h('span', selectedCountries)
                     ])
                 )
             )

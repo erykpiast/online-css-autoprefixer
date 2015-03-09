@@ -1,15 +1,32 @@
 ul {
-  display: none;
+  background-color: #FFF;
+  border: 1px solid darkgrey;
+  
   list-style-type: none;
+
+  max-height: calc(20 * 18px);
   padding: 0;
+  margin: 0;
+  overflow: auto;
+  position: absolute;
+  
+  display: none;
 }
 
 ul.is-visible {
   display: block;
 }
+
+li {
+  height: 18px;
+}
+
+li:hover {
+  cursor: pointer;
+}
   
 li.is-selected {
-  background-color: #AAA;
+  background-color: #4D90FE;
 }
 
 input[type=text].is-invalid {

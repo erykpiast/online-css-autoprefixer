@@ -9,13 +9,12 @@ const ENTER = 13;
 export default function createAutocompletedTextIntent() {
     var autocompletedTextIntent = Cycle.createIntent(function (autocompletedTextView, inputAttributes) {
         // var controlKeys = [ UP, DOWN, ENTER ];
-        
-        var up$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode === UP));
-        var down$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode === DOWN));
-        var enter$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode === ENTER));
-        
-        var notEnter$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (keyCode !== ENTER));
-        // var notControlKey$ = autocompletedTextView.get('select$').filter(({ keyCode }) => (controlKeys.indexOf(keyCode) === -1));
+
+        var up$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode === UP));
+        var down$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode === DOWN));
+        var enter$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode === ENTER));
+
+        var notEnter$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode !== ENTER));
 
         return {
             valueChange$: Rx.Observable.merge(
@@ -24,10 +23,19 @@ export default function createAutocompletedTextIntent() {
                 inputAttributes.get('value$')
             ).distinctUntilChanged(),
             selectedAutocompletionInput$: Rx.Observable.merge(
-                up$.map(() => -1),
-                down$.map(() => 1)
+                autocompletedTextView.get('hover$')
+                    .map(({ target }) => ({
+                        direct: target.index
+                    })),
+                Rx.Observable.merge(
+                    up$.map(() => -1),
+                    down$.map(() => 1)
+                ).map((modifier) => ({ modifier }))
             ).startWith(0),
-            selectedAutocompletionChange$: enter$,
+            selectedAutocompletionChange$: Rx.Observable.merge(
+                enter$,
+                autocompletedTextView.get('click$')
+            ),
             showAutocompletions$: Rx.Observable.merge(
                 notEnter$,
                 autocompletedTextView.get('focus$')

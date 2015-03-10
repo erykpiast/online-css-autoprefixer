@@ -8,8 +8,6 @@ const ENTER = 13;
 
 export default function createAutocompletedTextIntent() {
     var autocompletedTextIntent = Cycle.createIntent(function (autocompletedTextView, inputAttributes) {
-        // var controlKeys = [ UP, DOWN, ENTER ];
-
         var up$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode === UP));
         var down$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode === DOWN));
         var enter$ = autocompletedTextView.get('keydown$').filter(({ keyCode }) => (keyCode === ENTER));

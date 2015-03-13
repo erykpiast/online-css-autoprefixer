@@ -22,10 +22,23 @@ export default function createSettingsPopularityModel() {
     var settingsPopularityModel = Cycle.createModel(function (settingsPopularityIntent) {
         return {
             value$: Rx.Observable.combineLatest(
-                    settingsPopularityIntent.get('valueChange$'),
-                    Rx.Observable.just(availableCountries),
-                    (selectedCountries, availableCountries) => ({ availableCountries, selectedCountries })
-                )
+                settingsPopularityIntent.get('singleChange$'),
+                settingsPopularityIntent.get('baseChange$'),
+                (base, modifier) => {
+                    if(!base[modifier.index]) {
+                        base[modifier.index] = { };
+                    }
+                    
+                    base[modifier.index].country = modifier.country;
+                    base[modifier.index].popularity = modifier.popularity;
+                    
+                    return base;
+                }
+            ).startWith([ {
+                country: undefined,
+                popularity: undefined
+            } ]),
+            availableCountries$: Rx.Observable.just(availableCountries)
         };
     });
 

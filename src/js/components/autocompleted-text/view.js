@@ -12,9 +12,7 @@ export default function createAutocompletedTextView() {
                 autocompletedTextModel.get('areAutocompletionsVisible$'),
                 autocompletedTextModel.get('highlightedAutocompletionIndex$'),
                 autocompletedTextModel.get('isValueInvalid$'),
-                (value, autocompletions, areAutocompletionsVisible, highlightedAutocompletionIndex, isValueInvalid) => ({ value, autocompletions, areAutocompletionsVisible, highlightedAutocompletionIndex, isValueInvalid })
-            )
-            .map(({ value, autocompletions, areAutocompletionsVisible, highlightedAutocompletionIndex, isValueInvalid }) =>
+                (value, autocompletions, areAutocompletionsVisible, highlightedAutocompletionIndex, isValueInvalid) =>
                 h('div', [
                     h('input', {
                         type: 'text',
@@ -30,12 +28,12 @@ export default function createAutocompletedTextView() {
                             var singleOptionHeight = element.children[0] ? element.children[0].offsetHeight : 18;
                             var selectedAutocompletionTop = highlightedAutocompletionIndex * singleOptionHeight;
                             var selectedAutocompletionBottom = (highlightedAutocompletionIndex + 1) * singleOptionHeight;
-                            
+
                             var visibleViewport = {
                                 top: element[property],
                                 bottom: element[property] + element.offsetHeight
                             };
-                            
+
                             if(selectedAutocompletionTop < visibleViewport.top) {
                                 element[property] = selectedAutocompletionTop;
                             } else if(selectedAutocompletionBottom > visibleViewport.bottom) {

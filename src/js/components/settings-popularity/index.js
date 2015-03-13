@@ -25,8 +25,8 @@ xtag.register('oca-settings-popularity', {
                     .map((value) => JSON.parse(value))
             });
 
-            this._outputAttributes = Cycle.createDataFlowSink(function(intent) {
-                return intent.get('valueChange$')
+            this._outputAttributes = Cycle.createDataFlowSink(function(model) {
+                return model.get('value$')
                     .distinctUntilChanged()
                     .subscribe((value) => {
                         this.setAttribute('value', JSON.stringify(value));
@@ -40,7 +40,7 @@ xtag.register('oca-settings-popularity', {
             this._model.inject(this._intent);
             Cycle.createRenderer(this).inject(this._view);
 
-            this._outputAttributes.inject(this._intent);
+            this._outputAttributes.inject(this._model);
         },
         inserted: function() {
             

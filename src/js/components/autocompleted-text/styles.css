@@ -17,7 +17,8 @@ ul {
   width: -webkit-max-content;
   width: -moz-max-content;
   min-width: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: absolute;
   
   display: none;
@@ -28,10 +29,14 @@ ul.is-visible {
 }
 
 li {
+  font: normal normal normal 13.3333330154419px/normal sans-serif;
   height: 18px;
   float: left;
   clear: left;
   width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: .5em;
 }
 
 li:hover {

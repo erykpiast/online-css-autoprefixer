@@ -33,7 +33,7 @@ xtag.register('oca-settings-popularity', {
 
                         console.log(value);
 
-                        // this.dispatchEvent(new Event('change'));
+                        this.dispatchEvent(new Event('change'));
                     });
             }.bind(this));
 

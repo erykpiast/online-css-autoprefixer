@@ -5,13 +5,18 @@ export default function createValueRangeModel() {
     var valueRangeModel = Cycle.createModel(function (valueRangeIntent, inputAttributes) {
         return {
             value$: Rx.Observable.merge(
-                valueRangeIntent.get('rangeChange$'),
-                valueRangeIntent.get('valueChange$'),
+                valueRangeIntent.get('rangeInput$'),
+                valueRangeIntent.get('valueInput$'),
                 inputAttributes.get('value$')
             ),
-            min$: inputAttributes.get('min$'),
-            max$: inputAttributes.get('max$'),
+            min$: inputAttributes.get('min$')
+                .startWith(0),
+            max$: inputAttributes.get('max$')
+                .startWith(100),
             step$: inputAttributes.get('step$')
+                .startWith(1),
+            disabled$: inputAttributes.get('disabled$')
+                .startWith(false)
         };
     });
 

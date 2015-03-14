@@ -11,23 +11,26 @@ export default function createValueRangeView() {
                 valueRangeModel.get('min$'),
                 valueRangeModel.get('max$'),
                 valueRangeModel.get('step$'),
-                (value, min, max, step) =>
+                valueRangeModel.get('disabled$'),
+                (value, min, max, step, disabled) =>
                     h('div', [
                         h('input', {
                             type: 'range',
                             value: value,
-                            oninput: 'rangeChange$',
+                            oninput: 'rangeInput$',
                             min: min,
                             max: max,
-                            step: step
+                            step: step,
+                            disabled: disabled
                         }),
                         h('input', {
                             type: 'number',
                             value: value,
-                            oninput: 'valueChange$',
+                            oninput: 'valueInput$',
                             min: min,
                             max: max,
-                            step: step
+                            step: step,
+                            disabled: disabled
                         })
                     ])
             )

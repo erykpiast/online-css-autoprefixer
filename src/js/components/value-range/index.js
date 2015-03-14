@@ -43,6 +43,10 @@ xtag.register('value-range', {
                     .filter((ev) => (ev.attrName === 'step'))
                     .map((ev) => parseFloat(ev.attrValue, 10))
                     .filter((step) => !isNaN(step) && (step > 0))
+                    .distinctUntilChanged(),
+                disabled$: attributes$
+                    .filter((ev) => (ev.attrName === 'disabled'))
+                    .map((ev) => !!ev.attrValue)
                     .distinctUntilChanged()
             });
             this._outputAttributes = Cycle.createDataFlowSink(function(model) {
@@ -85,7 +89,7 @@ xtag.register('value-range', {
 
                 return min;
             },
-            attribute: { string: '0' }
+            attribute: { number: 0 }
         },
         max: {
             set: function(max) {
@@ -96,7 +100,7 @@ xtag.register('value-range', {
 
                 return max;
             },
-            attribute: { string: '100' }
+            attribute: { number: 100 }
         },
         step: {
             set: function(step) {
@@ -107,7 +111,18 @@ xtag.register('value-range', {
 
                 return step;
             },
-            attribute: { string: '1' }
+            attribute: { number: 1 }
+        },
+        disabled: {
+            set: function(disabled) {
+                this.attributes$.onNext({
+                    attrName: 'disabled',
+                    attrValue: disabled
+                });
+
+                return disabled;
+            },
+            attribute: { boolean: false }
         }
     }
 });

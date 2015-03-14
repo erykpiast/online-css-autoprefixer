@@ -22,7 +22,7 @@ xtag.register('oca-settings-popularity', {
                     // to prevent loops when changing attr value from inside of the component
                     // no keySelector needed, value is stringified JSON
                     .distinctUntilChanged()
-                    .map((value) => JSON.parse(value))
+                    .map((json) => JSON.parse(json))
             });
 
             this._outputAttributes = Cycle.createDataFlowSink(function(model) {
@@ -30,6 +30,8 @@ xtag.register('oca-settings-popularity', {
                     .distinctUntilChanged()
                     .subscribe((value) => {
                         this.setAttribute('value', JSON.stringify(value));
+
+                        console.log(value);
 
                         // this.dispatchEvent(new Event('change'));
                     });

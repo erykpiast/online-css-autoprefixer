@@ -26,8 +26,9 @@ xtag.register('autocompleted-text', {
             this._inputAttributes = Cycle.createDataFlowSource({
                 datalist$: attributes$
                     .filter((ev) => (ev.attrName === 'datalist'))
-                    .map((ev) => JSON.parse(ev.attrValue))
-                    .distinctUntilChanged(),
+                    .map((ev) => ev.attrValue)
+                    .distinctUntilChanged()
+                    .map((json) => JSON.parse(json)),
                 value$: attributes$
                     .filter((ev) => (ev.attrName === 'value'))
                     .map((ev) => ev.attrValue)

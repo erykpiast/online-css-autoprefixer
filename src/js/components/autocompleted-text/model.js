@@ -13,7 +13,8 @@ export default function createAutocompletedTextModel() {
             autocompletedTextIntent.get('valueChange$'),
             inputAttributes.get('datalist$'),
             (value, datalist) =>
-                datalist
+                value.length ? 
+                datalist // choose keywords matching to value and sort them by ranking
                     .map((keywords) => ({
                         value: keywords[0], // show only the first keyword
                         // but match all of them and choose one with the highest ranking
@@ -29,7 +30,10 @@ export default function createAutocompletedTextModel() {
                     }))
                     .filter(({ score }) => (score >= 0))
                     .sort((a, b) => b.score - a.score)
-                    .map(({ value }) => value)
+                    .map(({ value }) => value) :
+                datalist // or show all and sort alphabetically if value is empty
+                    .map((keywords) => keywords[0])
+                    .sort()
         );
 
         // autocompletions shouldn't be visible when text field is not focused, list is empty

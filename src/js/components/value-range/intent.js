@@ -3,9 +3,9 @@ import Cycle from 'cyclejs';
 export default function createValueRangeIntent() {
     var valueRangeIntent = Cycle.createIntent(function (valueRangeView) {
         return {
-            rangeChange$: valueRangeView.get('rangeChange$')
+            rangeInput$: valueRangeView.get('rangeInput$')
                 .map(({ target }) => target.value),
-            valueChange$: valueRangeView.get('valueChange$')
+            valueInput$: valueRangeView.get('valueInput$')
                 .map(({ target }) => target.value)
         };
     });

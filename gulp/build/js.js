@@ -4,7 +4,6 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var extend = require('extend');
 var connect = require('gulp-connect');
-var transform = require('vinyl-transform');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var browserify = require('browserify');
@@ -13,10 +12,6 @@ var aliasify = require('aliasify');
 var brfs = require('brfs');
 
 var config = require('../config');
-
-var merge = require('merge-stream');
-var jshint = require('gulp-jshint');
-var stylish = require('jshint-stylish');
 
 module.exports = function buildJsTask(before) {
     var bundler = watchify(browserify(config.src.js.main, extend(watchify.args, {

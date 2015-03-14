@@ -7,6 +7,7 @@ import omit from 'lodash.omit';
 import indexBy from 'lodash.indexby';
 import mapObjectToArray from 'lodash.map';
 import assign from 'lodash.assign';
+import isEqual from 'lodash.isequal';
 
 
 var fs = require('fs');
@@ -40,14 +41,19 @@ export default function createSettingsPopularityModel() {
             name: countryNames[countryCode],
             code: countryCode,
             popularity: popularity
-        })));
+        })))
+        .startWith([ {
+            name: '',
+            code: '',
+            popularity: 0
+        } ]);
 
         var selectedCountries$ = Rx.Observable.merge(
             settingsPopularityIntent.get('countryNameChange$'),
             settingsPopularityIntent.get('countryPopularityChange$')
         )
         .withLatestFrom(
-            baseCountries,
+            baseCountries$,
             (change, current) => {
                 if(!current[change.index]) {
                     current[change.index] = {
@@ -71,11 +77,10 @@ export default function createSettingsPopularityModel() {
                 
                 return current;
             }
-        )/*.startWith([ {
-            name: '',
-            code: '',
-            popularity: 0
-        } ])*/;
+        )
+        .merge(baseCountries$)
+        .distinctUntilChanged(null, isEqual);
+        
 
         return {
             value$: Rx.Observable.combineLatest(

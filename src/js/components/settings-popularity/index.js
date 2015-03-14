@@ -27,6 +27,7 @@ xtag.register('oca-settings-popularity', {
 
             this._outputAttributes = Cycle.createDataFlowSink(function(model) {
                 return model.get('value$')
+                    .skip(1)
                     .distinctUntilChanged()
                     .subscribe((value) => {
                         this.setAttribute('value', JSON.stringify(value));
@@ -45,7 +46,7 @@ xtag.register('oca-settings-popularity', {
             this._outputAttributes.inject(this._model);
         },
         inserted: function() {
-            
+
         }
     },
     accessors: {

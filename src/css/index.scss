@@ -20,12 +20,12 @@ body {
 .autoprefixer {
     display: flex;
     flex-direction: column;
-    
+
     font: {
         size: 12px;
         family: sans-serif;
     };
-    
+
     fieldset {
         border: 1px solid #444;
         margin-bottom: 1em;
@@ -93,5 +93,23 @@ body {
         &__input {
             width: 100%;
         }
+    }
+}
+
+
+.accordion {
+
+    &__header,
+    &__header + * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &__content {
+        display: none;
+    }
+
+    &__header:checked ~ &__content {
+        display: block;
     }
 }

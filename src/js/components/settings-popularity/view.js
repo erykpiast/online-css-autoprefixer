@@ -26,48 +26,60 @@ export default function createsettingsPopularityView() {
                 (globalPopularity, byCountry, availableCountries) => h('form', {
                         className: componentClass
                     }, h('fieldset', [
-                        h('legend', 'Popularity'),
-                        h('fieldset', {
-                            className: componentClass + '__global'
+                        h('input', {
+                            className: 'accordion__header',
+                            id: 'settings__popularity__header',
+                            type: 'checkbox',
+                            checked: false
+                        }),
+                        h('label', {
+                            htmlFor: 'settings__popularity__header'
+                        }, 'Popularity'),
+                        h('div', {
+                            className: 'accordion__content'
                         }, [
-                            h('legend', 'Global'),
-                            h('value-range', {
-                                value: globalPopularity || 0,
-                                min: 0,
-                                max: 100,
-                                step: 0.01,
-                                onchange: 'globalPopularityChange$',
-                                id: 'global-popularity'
-                            }),
-                        ]),
-                        h('fieldset', {
-                            className: componentClass + '__country'
-                        }, [
-                            h('legend', 'By country'),
-                            h('ul', {
-                                className: componentClass + '__country__list'
-                            }, byCountry.map((country, index) => h('li', {
-                                className: componentClass + '__country__list__country'
+                            h('fieldset', {
+                                className: componentClass + '__global'
                             }, [
-                                h('autocompleted-text', {
-                                    value: country.name || '',
-                                    datalist: JSON.stringify(
-                                        _getAvailableCountries(availableCountries, byCountry, country)
-                                            .map(({ name, code }) => [ name, code ])
-                                    ),
-                                    onchange: 'countryNameChange$',
-                                    index: index
-                                }),
+                                h('legend', 'Global'),
                                 h('value-range', {
-                                    value: country.popularity || 0,
-                                    disabled: !country.name,
+                                    value: globalPopularity || 0,
                                     min: 0,
                                     max: 100,
                                     step: 0.01,
-                                    onchange: 'countryPopularityChange$',
-                                    index: index
-                                })
-                            ])))
+                                    onchange: 'globalPopularityChange$',
+                                    id: 'global-popularity'
+                                }),
+                            ]),
+                            h('fieldset', {
+                                className: componentClass + '__country'
+                            }, [
+                                h('legend', 'By country'),
+                                h('ul', {
+                                    className: componentClass + '__country__list'
+                                }, byCountry.map((country, index) => h('li', {
+                                    className: componentClass + '__country__list__country'
+                                }, [
+                                    h('autocompleted-text', {
+                                        value: country.name || '',
+                                        datalist: JSON.stringify(
+                                            _getAvailableCountries(availableCountries, byCountry, country)
+                                                .map(({ name, code }) => [ name, code ])
+                                        ),
+                                        onchange: 'countryNameChange$',
+                                        index: index
+                                    }),
+                                    h('value-range', {
+                                        value: country.popularity || 0,
+                                        disabled: !country.name,
+                                        min: 0,
+                                        max: 100,
+                                        step: 0.01,
+                                        onchange: 'countryPopularityChange$',
+                                        index: index
+                                    })
+                                ])))
+                            ])
                         ])
                     ])
                 )

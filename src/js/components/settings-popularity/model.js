@@ -34,17 +34,20 @@ export default function createSettingsPopularityModel() {
             settingsPopularityIntent.get('globalPopularityChange$')
         ).distinctUntilChanged();
 
+        var baseCountries$ = settingsPopularityIntent.get('baseChange$')
+        .map((base) => omit(base, 'global'))
+        .map((base) => mapObjectToArray(base, (popularity, countryCode) => ({
+            name: countryNames[countryCode],
+            code: countryCode,
+            popularity: popularity
+        })));
+
         var selectedCountries$ = Rx.Observable.merge(
             settingsPopularityIntent.get('countryNameChange$'),
             settingsPopularityIntent.get('countryPopularityChange$')
-        ).withLatestFrom(
-            settingsPopularityIntent.get('baseChange$')
-                .map((base) => omit(base, 'global'))
-                .map((base) => mapObjectToArray(base, (popularity, countryCode) => ({
-                    name: countryNames[countryCode],
-                    code: countryCode,
-                    popularity: popularity
-                }))),
+        )
+        .withLatestFrom(
+            baseCountries,
             (change, current) => {
                 if(!current[change.index]) {
                     current[change.index] = {
@@ -68,11 +71,11 @@ export default function createSettingsPopularityModel() {
                 
                 return current;
             }
-        ).startWith([ {
+        )/*.startWith([ {
             name: '',
             code: '',
             popularity: 0
-        } ]);
+        } ])*/;
 
         return {
             value$: Rx.Observable.combineLatest(

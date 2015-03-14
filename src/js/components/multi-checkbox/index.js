@@ -2,9 +2,9 @@ import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 import xtag from 'x-tag';
 
-import View from './view';
-import Intent from './intent';
-import Model from './model';
+import view from './view';
+import intent from './intent';
+import model from './model';
 
 var fs = require('fs');
 var stylesheet = fs.readFileSync(__dirname + '/styles.css', 'utf8');
@@ -19,9 +19,9 @@ xtag.register('multi-checkbox', {
 
             var attributes$ = this.attributes$ = new Rx.Subject();
 
-            this._model = Model();
-            this._view = View();
-            this._intent = Intent();
+            this._model = model();
+            this._view = view();
+            this._intent = intent();
             this._inputAttributes = Cycle.createDataFlowSource({
                 value$: attributes$
                     .filter((ev) => (ev.attrName === 'value'))

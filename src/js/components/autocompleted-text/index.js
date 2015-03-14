@@ -2,9 +2,9 @@ import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 import xtag from 'x-tag';
 
-import View from './view';
-import Intent from './intent';
-import Model from './model';
+import view from './view';
+import intent from './intent';
+import model from './model';
 import fs from 'fs';
 
 var fs = require('fs');
@@ -20,9 +20,9 @@ xtag.register('autocompleted-text', {
 
             var attributes$ = this.attributes$ = new Rx.Subject();
 
-            this._model = Model();
-            this._view = View();
-            this._intent = Intent();
+            this._model = model();
+            this._view = view();
+            this._intent = intent();
             this._inputAttributes = Cycle.createDataFlowSource({
                 datalist$: attributes$
                     .filter((ev) => (ev.attrName === 'datalist'))

@@ -2,19 +2,18 @@ import Cycle from 'cyclejs';
 import { Rx } from 'cyclejs';
 import xtag from 'x-tag';
 
-import View from './view';
-import Intent from './intent';
-import Model from './model';
-
+import view from './view';
+import intent from './intent';
+import model from './model';
 
 xtag.register('oca-settings-direct', {
     lifecycle: {
         created: function() {
             var attributes$ = this.attributes$ = new Rx.Subject();
 
-            this._model = Model();
-            this._view = View();
-            this._intent = Intent();
+            this._model = model();
+            this._view = view();
+            this._intent = intent();
             this._inputAttributes = Cycle.createDataFlowSource({
                 selectedBrowsers$: attributes$
                     .filter((ev) => (ev.attrName === 'value'))
@@ -41,9 +40,6 @@ xtag.register('oca-settings-direct', {
             Cycle.createRenderer(this).inject(this._view);
 
             this._outputAttributes.inject(this._intent);
-        },
-        inserted: function() {
-            
         }
     },
     accessors: {

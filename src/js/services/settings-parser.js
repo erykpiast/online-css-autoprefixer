@@ -1,7 +1,6 @@
 import each from 'lodash.foreach';
 import browserslist from 'browserslist';
 
-export default { stringify, parse };
 
 /* @function stringify - convert settings object to browserlist pattern
  * @access public
@@ -200,3 +199,5 @@ export function parse (browserslistPattern) {
 
     return settings;
 }
+
+export default { stringify, parse };

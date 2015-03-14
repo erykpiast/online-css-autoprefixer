@@ -4,8 +4,6 @@ import browserslist from 'browserslist';
 import compareVersions from 'version-compare.js';
 
 
-export default { parse };
-
 /* @function parse - returns the list of browsers based on browserslist pattern
  *    list is grouped by browser name!
  * @access public
@@ -35,3 +33,5 @@ export function parse (string) {
         ).sort(compareVersions)
     );
 }
+
+export default { parse };

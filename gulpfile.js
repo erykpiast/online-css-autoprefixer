@@ -10,12 +10,11 @@ var config = require('./gulp/config');
 gulp.task('lint', require('./gulp/lint'));
 gulp.task('webserver', require('./gulp/web-server'));
 
-gulp.task('build:js', require('./gulp/build/js'));
+gulp.task('build:js', require('./gulp/build/js')(require('./gulp/lint').bind(null, null)));
 gulp.task('build:html', require('./gulp/build/html'));
 gulp.task('build:css', require('./gulp/build/css'));
 gulp.task('_build', [ 'build:js', 'build:html', 'build:css' ]);
 gulp.task('build', function() {
-    gulp.watch(config.src.js.files, [ 'lint', 'build:js' ]);
     gulp.watch(config.src.css.files, [ 'build:css' ]);
     gulp.start([ '_build' ]);
 });
@@ -41,4 +40,4 @@ gulp.task('test-dev', function() {
     gulp.start('test');
 });
 
-gulp.task('default', [ 'lint', 'build', 'webserver' ]);
+gulp.task('default', [ 'build', 'webserver' ]);

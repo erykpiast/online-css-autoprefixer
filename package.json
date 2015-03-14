@@ -1,6 +1,6 @@
 {
   "name": "online-css-autoprefixer",
-  "version": "0.0.1",
+  "version": "0.1.",
   "description": "Online CSS autoprefixe",
   "main": "index.js",
   "scripts": {

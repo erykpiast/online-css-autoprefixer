@@ -2,24 +2,72 @@
 
     &__direct {
 
-        &__browsers,
-        &__browser__versions {
-            padding: 0;
-            list-style-type: none;
-        }
-
         &__browsers {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
+            padding: 0;
+            margin: 0;
+
+            list-style-type: none;
+
+            multi-checkbox::shadow ul {
+                max-height: 5em;
+                min-width: 2em;
+                overflow: {
+                    x: hidden;
+                    y: auto;
+                };
+            }
         }
 
         &__browser {
+            width: 20%;
 
+            & > fieldset {
+                padding: 0;
+                margin: 0 .5em {
+                    bottom: 1em;
+                };
+
+                border: none {
+                    top: 1px solid #444;
+                };
+
+                & > legend {
+                    display: block;
+                    margin-left: .5em
+                }
+            }
         }
     }
 
 
     &__popularity {
+
+        &__country,
+        &__global {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        &__country {
+            &__list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+
+                &__country {
+                    margin-bottom: .5em;
+
+                    & > autocompleted-text,
+                    & > value-range {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
 
         value-range::shadow input[type="number"] {
             width: 55px;

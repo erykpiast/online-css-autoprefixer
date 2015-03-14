@@ -12,7 +12,9 @@ var config = require('../config');
 function buildCssTask() {
     return gulp.src(config.src.css.files)
         .pipe(sourcemaps.init())
-        .pipe(sass())
+        .pipe(sass({
+            errLogToConsole: true
+        }))
         .on('error', function(err) {
             gutil.log('SASS error:', err);
         })

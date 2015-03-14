@@ -3,8 +3,6 @@ import { h } from 'cyclejs';
 import { Rx } from 'cyclejs';
 
 var componentClass = 'autoprefixer__settings__popularity';
-// var browsersListClass = componentClass + '__browsers';
-// var browserClass = componentClass + '__browser';
 
 
 // make already chosen countries unavailable in other widgets
@@ -29,10 +27,10 @@ export default function createsettingsPopularityView() {
                         className: componentClass
                     }, h('fieldset', [
                         h('legend', 'Popularity'),
-                        h('div', [
-                            h('label', {
-                                htmlFor: 'global-popularity'
-                            }, 'Global'),
+                        h('fieldset', {
+                            className: componentClass + '__global'
+                        }, [
+                            h('legend', 'Global'),
                             h('value-range', {
                                 value: globalPopularity || 0,
                                 min: 0,
@@ -42,27 +40,35 @@ export default function createsettingsPopularityView() {
                                 id: 'global-popularity'
                             }),
                         ]),
-                        h('strong', 'By country'),
-                        h('ul', byCountry.map((country, index) => h('li', [
-                            h('autocompleted-text', {
-                                value: country.name || '',
-                                datalist: JSON.stringify(
-                                    _getAvailableCountries(availableCountries, byCountry, country)
-                                        .map(({ name, code }) => [ name, code ])
-                                ),
-                                onchange: 'countryNameChange$',
-                                index: index
-                            }),
-                            h('value-range', {
-                                value: country.popularity || 0,
-                                disabled: !country.name,
-                                min: 0,
-                                max: 100,
-                                step: 0.01,
-                                onchange: 'countryPopularityChange$',
-                                index: index
-                            })
-                        ])))
+                        h('fieldset', {
+                            className: componentClass + '__country'
+                        }, [
+                            h('legend', 'By country'),
+                            h('ul', {
+                                className: componentClass + '__country__list'
+                            }, byCountry.map((country, index) => h('li', {
+                                className: componentClass + '__country__list__country'
+                            }, [
+                                h('autocompleted-text', {
+                                    value: country.name || '',
+                                    datalist: JSON.stringify(
+                                        _getAvailableCountries(availableCountries, byCountry, country)
+                                            .map(({ name, code }) => [ name, code ])
+                                    ),
+                                    onchange: 'countryNameChange$',
+                                    index: index
+                                }),
+                                h('value-range', {
+                                    value: country.popularity || 0,
+                                    disabled: !country.name,
+                                    min: 0,
+                                    max: 100,
+                                    step: 0.01,
+                                    onchange: 'countryPopularityChange$',
+                                    index: index
+                                })
+                            ])))
+                        ])
                     ])
                 )
             )

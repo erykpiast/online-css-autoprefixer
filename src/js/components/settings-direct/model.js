@@ -19,7 +19,7 @@ function _selectBrowsers(selectedBrowsers, availableBrowsers) {
                 name: version,
                 selected: (selectedBrowsers.hasOwnProperty(browserKey) &&
                     (selectedBrowsers[browserKey].indexOf(version) !== -1)) ||
-                    ((browserKey === 'firefox') && (version === '31') && (selectedBrowsers[browserKey].indexOf('esr') !== -1))
+                    ((browserKey === 'firefox') && (version === '31') && (selectedBrowsers.hasOwnProperty(browserKey) && selectedBrowsers[browserKey].indexOf('esr') !== -1))
             }))
         };
     });

@@ -12,7 +12,7 @@ var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
                             cascade: true
                         })
                     )
-                    .filter(function(processor) {
+                    .filter((processor) => {
                         try {
                             // check if settings are understandable by autoprefixer
                             processor.process('color: #FFF', { safe: true });
@@ -24,8 +24,17 @@ var OutputModel = Cycle.createModel(function (inputModel, settingsModel) {
                             return false;
                         }
                     }),
-                (source, processor) => processor.process(source, { safe: true }).css
-            )
+                (source, processor) => {
+                    try {
+                        // user input can be broken
+                        return processor.process(source, { safe: true }).css
+                    }  catch(err) {
+                        console.log(err);
+
+                        return null;
+                    }
+                }
+            ).filter((prefixed) => !!prefixed)
     };
 });
 
